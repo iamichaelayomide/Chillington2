@@ -48,8 +48,6 @@ type Testimonial = {
   accent: string;
 };
 
-const tabs = ["All", "Premium Treat", "Combo Treats", "Classic Treats"] as const;
-
 const sizeLabels: Record<MenuSize, string> = {
   regular: "Regular",
   special: "Special",
@@ -143,7 +141,6 @@ function firstSize(item: MenuItem) {
 }
 
 export function ChillingtonShowcase() {
-  const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>("All");
   const [query, setQuery] = useState("");
   const [cartOpen, setCartOpen] = useState(false);
   const [selectedSizes, setSelectedSizes] = useState<Record<string, MenuSize>>({});
@@ -151,23 +148,31 @@ export function ChillingtonShowcase() {
 
   const allItems = useMemo(() => [...premiumTreats, ...comboTreats, ...classicTreats], []);
 
-  const filteredItems = useMemo(() => {
-    const base =
-      activeTab === "All"
-        ? allItems
-        : activeTab === "Premium Treat"
-          ? premiumTreats
-          : activeTab === "Combo Treats"
-            ? comboTreats
-            : classicTreats;
-
-    if (!query.trim()) {
-      return base;
-    }
-
+  const filteredSections = useMemo(() => {
     const normalized = query.trim().toLowerCase();
-    return base.filter((item) => item.name.toLowerCase().includes(normalized));
-  }, [activeTab, allItems, query]);
+    const matches = (item: MenuItem) => !normalized || item.name.toLowerCase().includes(normalized);
+
+    return [
+      {
+        id: "premium",
+        label: "Premium Treats",
+        description: "Single-protein wraps and signature crowd favourites.",
+        items: premiumTreats.filter(matches),
+      },
+      {
+        id: "combo",
+        label: "Combo Treats",
+        description: "Double-protein combinations for heavier cravings.",
+        items: comboTreats.filter(matches),
+      },
+      {
+        id: "classic",
+        label: "Classic Treats",
+        description: "House specials, minis, and lighter options.",
+        items: classicTreats.filter(matches),
+      },
+    ].filter((section) => section.items.length > 0);
+  }, [query]);
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartTotal = cart.reduce((sum, item) => sum + item.quantity * item.price, 0);
@@ -297,13 +302,13 @@ export function ChillingtonShowcase() {
             </div>
 
             <div className="mt-6 flex flex-wrap items-center gap-3 rounded-[1.5rem] border border-slate-200 bg-slate-50 px-4 py-4">
-              <span className="rounded-full bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-orange-700">
+              <span className="rounded-full bg-white px-3 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-orange-700">
                 Fast delivery
               </span>
-              <span className="rounded-full bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-orange-700">
+              <span className="rounded-full bg-white px-3 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-orange-700">
                 Freshly made
               </span>
-              <span className="rounded-full bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-orange-700">
+              <span className="rounded-full bg-white px-3 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-orange-700">
                 Akure orders daily
               </span>
             </div>
@@ -327,27 +332,27 @@ export function ChillingtonShowcase() {
         <div className="mx-auto max-w-7xl space-y-6">
           <div className="space-y-3">
             <p className="text-xs font-bold uppercase tracking-[0.24em] text-orange-600">Menu</p>
-            <h2 className="text-3xl font-black text-slate-950 sm:text-4xl">Built for quick cravings, not endless clicks</h2>
+            <h2 className="text-3xl font-black text-slate-950 sm:text-4xl">Organized for quick ordering</h2>
             <p className="max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
-              Filter by menu type, switch sizes inline, and keep your cart live while you browse.
+              Browse by section, compare sizes inside each card, and move from premium wraps to combos and classics without losing your place.
             </p>
           </div>
 
           <div className="grid gap-3 md:grid-cols-[1fr_auto] md:items-center">
-            <div className="flex flex-wrap gap-3">
-              {tabs.map((tab) => (
-                <button
-                  key={tab}
-                  type="button"
-                  onClick={() => setActiveTab(tab)}
-                  className={`rounded-full px-4 py-3 text-sm font-semibold transition ${
-                    activeTab === tab
-                      ? "bg-orange-500 text-white"
-                      : "border border-orange-200 bg-white text-slate-700 hover:border-orange-400 hover:text-orange-600"
-                  }`}
+            <div className="flex flex-wrap gap-3 lg:hidden">
+              {[
+                { href: "#premium", label: "Premium" },
+                { href: "#combo", label: "Combo" },
+                { href: "#classic", label: "Classic" },
+                { href: "#extras", label: "Extras" },
+              ].map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-full border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-orange-400 hover:text-orange-600"
                 >
-                  {tab}
-                </button>
+                  {link.label}
+                </a>
               ))}
             </div>
 
@@ -362,84 +367,125 @@ export function ChillingtonShowcase() {
             </label>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-            {filteredItems.map((item) => {
-              const selected = getSelectedSize(item);
-              const sizes = Object.keys(item.prices) as MenuSize[];
-              const price = item.prices[selected] ?? 0;
-
-              return (
-                <article key={item.id} className="group flex flex-col overflow-hidden rounded-3xl border border-neutral-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-                  <div className="relative h-44 overflow-hidden bg-neutral-100">
-                    <Image src={item.image} alt={item.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 1024px) 100vw, 33vw" />
-                    {item.tag ? (
-                      <span className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-neutral-900">
-                        {item.tag}
-                      </span>
-                    ) : null}
-                  </div>
-
-                  <div className="flex flex-1 flex-col p-4">
-                    <h3 className="text-base font-black text-neutral-900">{item.name}</h3>
-
-                    {sizes.length > 1 ? (
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {sizes.map((size) => (
-                          <button
-                            key={size}
-                            type="button"
-                            onClick={() => setSelectedSize(item.id, size)}
-                            className={`rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition-all ${
-                              selected === size
-                                ? "border-orange-500 bg-orange-500 text-white"
-                                : "border-neutral-200 bg-neutral-50 text-neutral-500 hover:border-orange-300"
-                            }`}
-                          >
-                            {sizeLabels[size]}
-                          </button>
-                        ))}
-                      </div>
-                    ) : null}
-
-                    <div className="mt-auto flex items-center justify-between pt-5">
-                      <span className="text-xl font-black text-neutral-900">{formatCurrency(price)}</span>
-                      <button
-                        type="button"
-                        onClick={() => addToCart(item, selected)}
-                        className="inline-flex items-center gap-2 rounded-2xl bg-slate-950 px-4 py-2 text-xs font-black uppercase tracking-wide text-white transition hover:bg-slate-800"
-                      >
-                        <Plus className="h-3.5 w-3.5" />
-                        Add
-                      </button>
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-
-          {!filteredItems.length ? (
-            <div className="rounded-[2rem] border border-dashed border-orange-200 bg-white px-6 py-16 text-center">
-              <p className="text-2xl font-black text-slate-900">Nothing matches that search yet.</p>
-              <p className="mt-2 text-sm text-slate-600">Try another keyword or jump back to all menu groups.</p>
-            </div>
-          ) : null}
-
-          <div className="rounded-[2rem] border border-orange-200 bg-white p-6">
-            <div className="mb-5 flex items-center justify-between gap-3">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-600">Extras</p>
-                <h3 className="mt-2 text-2xl font-black text-slate-950">Customise your wrap</h3>
+          <div className="grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)] lg:items-start">
+            <aside className="hidden lg:sticky lg:top-24 lg:block">
+              <div className="rounded-[1.75rem] border border-slate-200 bg-white p-4 shadow-sm">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Browse menu</p>
+                <div className="mt-4 space-y-2">
+                  {[
+                    { href: "#premium", label: "Premium Treats", note: "Signature proteins" },
+                    { href: "#combo", label: "Combo Treats", note: "Double-protein picks" },
+                    { href: "#classic", label: "Classic Treats", note: "House specials and minis" },
+                    { href: "#extras", label: "Extras", note: "Wrap add-ons" },
+                  ].map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      className="block rounded-[1.2rem] border border-slate-200 px-4 py-3 transition hover:border-orange-300 hover:bg-orange-50"
+                    >
+                      <p className="text-sm font-semibold text-slate-900">{link.label}</p>
+                      <p className="mt-1 text-xs text-slate-500">{link.note}</p>
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
+            </aside>
 
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
-              {extras.map((extra) => (
-                <div key={extra.id} className="rounded-[1.4rem] border border-orange-100 bg-orange-50 px-4 py-5 text-center">
-                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-700">{extra.name}</p>
-                  <p className="mt-3 text-lg font-black text-orange-600">{formatCurrency(extra.price)}</p>
+            <div className="space-y-8">
+              {filteredSections.map((section) => (
+                <div key={section.id} id={section.id} className="space-y-4">
+                  <div className="flex flex-wrap items-end justify-between gap-3">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">{section.label}</p>
+                      <p className="mt-2 text-sm text-slate-600">{section.description}</p>
+                    </div>
+                    <span className="rounded-full bg-slate-100 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-slate-600">
+                      {section.items.length} items
+                    </span>
+                  </div>
+
+                  <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                    {section.items.map((item) => {
+                      const selected = getSelectedSize(item);
+                      const sizes = Object.keys(item.prices) as MenuSize[];
+                      const price = item.prices[selected] ?? 0;
+
+                      return (
+                        <article key={item.id} className="group flex flex-col overflow-hidden rounded-3xl border border-neutral-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                          <div className="relative h-44 overflow-hidden bg-neutral-100">
+                            <Image src={item.image} alt={item.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 1024px) 100vw, 33vw" />
+                            {item.tag ? (
+                              <span className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-neutral-900">
+                                {item.tag}
+                              </span>
+                            ) : null}
+                          </div>
+
+                          <div className="flex flex-1 flex-col p-4">
+                            <h3 className="text-base font-bold text-neutral-900">{item.name}</h3>
+
+                            {sizes.length > 1 ? (
+                              <div className="mt-4 flex flex-wrap gap-2">
+                                {sizes.map((size) => (
+                                  <button
+                                    key={size}
+                                    type="button"
+                                    onClick={() => setSelectedSize(item.id, size)}
+                                    className={`rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-widest transition-all ${
+                                      selected === size
+                                        ? "border-orange-500 bg-orange-500 text-white"
+                                        : "border-neutral-200 bg-neutral-50 text-neutral-500 hover:border-orange-300"
+                                    }`}
+                                  >
+                                    {sizeLabels[size]}
+                                  </button>
+                                ))}
+                              </div>
+                            ) : null}
+
+                            <div className="mt-auto flex items-center justify-between pt-5">
+                              <span className="text-xl font-black text-neutral-900">{formatCurrency(price)}</span>
+                              <button
+                                type="button"
+                                onClick={() => addToCart(item, selected)}
+                                className="inline-flex items-center gap-2 rounded-2xl bg-slate-950 px-4 py-2 text-xs font-bold uppercase tracking-wide text-white transition hover:bg-slate-800"
+                              >
+                                <Plus className="h-3.5 w-3.5" />
+                                Add
+                              </button>
+                            </div>
+                          </div>
+                        </article>
+                      );
+                    })}
+                  </div>
                 </div>
               ))}
+
+              {!filteredSections.length ? (
+                <div className="rounded-[2rem] border border-dashed border-orange-200 bg-white px-6 py-16 text-center">
+                  <p className="text-2xl font-black text-slate-900">Nothing matches that search yet.</p>
+                  <p className="mt-2 text-sm text-slate-600">Try another keyword or jump back to all menu groups.</p>
+                </div>
+              ) : null}
+
+              <div id="extras" className="rounded-[2rem] border border-orange-200 bg-white p-6">
+                <div className="mb-5 flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-600">Extras</p>
+                    <h3 className="mt-2 text-2xl font-black text-slate-950">Customise your wrap</h3>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7">
+                  {extras.map((extra) => (
+                    <div key={extra.id} className="rounded-[1.4rem] border border-orange-100 bg-orange-50 px-4 py-5 text-center">
+                      <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-700">{extra.name}</p>
+                      <p className="mt-3 text-lg font-black text-orange-600">{formatCurrency(extra.price)}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -449,7 +495,7 @@ export function ChillingtonShowcase() {
         <div className="mx-auto max-w-7xl space-y-8">
           <div className="space-y-3">
             <p className="text-xs font-bold uppercase tracking-[0.24em] text-orange-600">Testimonials</p>
-            <h2 className="text-3xl font-black text-slate-950 sm:text-4xl">Swipe through what people say after the first bite</h2>
+            <h2 className="text-3xl font-semibold text-slate-950 sm:text-4xl">Swipe through what people say after the first bite</h2>
             <p className="max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
               Built to scroll naturally on touch screens. Drag sideways, swipe on mobile, or trackpad through the reviews before you hit the about section.
             </p>
@@ -463,20 +509,20 @@ export function ChillingtonShowcase() {
               >
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-lg font-black text-slate-950">{testimonial.name}</p>
-                    <p className="mt-1 text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{testimonial.location}</p>
+                    <p className="text-lg font-semibold text-slate-950">{testimonial.name}</p>
+                    <p className="mt-1 text-xs font-medium uppercase tracking-[0.18em] text-slate-500">{testimonial.location}</p>
                   </div>
-                  <div className="rounded-full bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-orange-700">
+                  <div className="rounded-full bg-white px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-orange-700">
                     Verified order
                   </div>
                 </div>
 
-                <p className="mt-6 text-xl font-black leading-9 text-slate-950">&ldquo;{testimonial.quote}&rdquo;</p>
+                <p className="mt-6 text-xl font-medium leading-9 text-slate-950">&ldquo;{testimonial.quote}&rdquo;</p>
 
                 <div className="mt-8 flex items-center justify-between gap-4 border-t border-slate-200/70 pt-5">
                   <div>
-                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">Ordered</p>
-                    <p className="mt-2 text-sm font-semibold text-slate-700">{testimonial.order}</p>
+                    <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">Ordered</p>
+                    <p className="mt-2 text-sm font-medium text-slate-700">{testimonial.order}</p>
                   </div>
                   <div className="flex gap-1 text-orange-500">
                     <span>★</span>
@@ -494,13 +540,8 @@ export function ChillingtonShowcase() {
 
       <section id="about" className="bg-slate-950 px-4 py-20 text-white sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="overflow-hidden rounded-[2rem] bg-[#1e293b]">
-              <Image src="/images/food/platter.jpg" alt="Shawarma platter with fries" width={800} height={960} className="h-full w-full object-cover" />
-            </div>
-            <div className="overflow-hidden rounded-[2rem] bg-[#1e293b]">
-              <Image src="/images/food/closeup.jpg" alt="Detailed shawarma close-up" width={800} height={960} className="h-full w-full object-cover" />
-            </div>
+          <div className="overflow-hidden rounded-[2rem] bg-[#1e293b]">
+            <Image src="/images/food/platter.jpg" alt="Shawarma platter with fries" width={1000} height={1180} className="h-full w-full object-cover" />
           </div>
 
           <div>
@@ -720,3 +761,5 @@ export function ChillingtonShowcase() {
     </main>
   );
 }
+
+
