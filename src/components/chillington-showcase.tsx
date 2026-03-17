@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import {
   Check,
@@ -98,7 +99,7 @@ const testimonials: Testimonial[] = [
     location: "Akure",
     order: "Chicken Jumbo + fries",
     quote: "This is the kind of shawarma that makes you stop talking after the first bite. The wrap was heavy, hot, and packed properly.",
-    accent: "bg-[#fff1e8]",
+    accent: "bg-[linear-gradient(135deg,#28150d,#120f10)]",
   },
   {
     id: "t2",
@@ -106,7 +107,7 @@ const testimonials: Testimonial[] = [
     location: "FUTA South Gate",
     order: "Suya Special",
     quote: "The suya version had real heat and the cream balanced it well. I ordered once and it turned into my default late-night order.",
-    accent: "bg-[#fff7dc]",
+    accent: "bg-[linear-gradient(135deg,#30180b,#101113)]",
   },
   {
     id: "t3",
@@ -114,7 +115,7 @@ const testimonials: Testimonial[] = [
     location: "Alagbaka",
     order: "Chicken and Beef Combo",
     quote: "The combo did not feel small or rushed. You can tell the fillings are generous, and it still arrived looking clean.",
-    accent: "bg-[#eef7ef]",
+    accent: "bg-[linear-gradient(135deg,#172117,#0d0f10)]",
   },
   {
     id: "t4",
@@ -122,7 +123,7 @@ const testimonials: Testimonial[] = [
     location: "Ijapo Estate",
     order: "Turkey Special",
     quote: "Their turkey shawarma tastes premium. It feels like the kind of order you make when you actually want to enjoy your money.",
-    accent: "bg-[#f6f0ff]",
+    accent: "bg-[linear-gradient(135deg,#24170c,#121114)]",
   },
 ];
 
@@ -257,31 +258,31 @@ export function ChillingtonShowcase() {
   }
 
   return (
-    <main className="min-h-screen bg-[#edf2f7] text-neutral-900">
-      <header className="sticky top-0 z-40 border-b border-slate-200 bg-[#edf2f7]/95 backdrop-blur">
+    <main className="min-h-screen bg-transparent text-[#f7f1e8]">
+      <header className="sticky top-0 z-40 border-b border-white/10 bg-[#090909]/85 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-orange-500 text-white shadow-lg shadow-orange-200">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full border border-orange-400/40 bg-orange-500/15 text-orange-300 shadow-[0_0_24px_rgba(249,115,22,0.35)]">
               <Flame className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-orange-500">Chillington</p>
-              <p className="text-lg font-black uppercase tracking-tight text-neutral-950">Bites V2</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-orange-300/80">Chillington</p>
+              <p className="text-lg font-black uppercase tracking-tight text-white">Bites V2</p>
             </div>
           </div>
 
-          <div className="hidden items-center gap-8 text-xs font-bold uppercase tracking-[0.22em] text-neutral-500 md:flex">
-            <a href="/deals" className="border-b-2 border-transparent pb-1 transition hover:border-orange-300 hover:text-orange-500">Deals</a>
-            <a href="#about" className="border-b-2 border-transparent pb-1 transition hover:border-orange-300 hover:text-orange-500">About</a>
-            <a href="#footer" className="border-b-2 border-transparent pb-1 transition hover:border-orange-300 hover:text-orange-500">Contact</a>
+          <div className="hidden items-center gap-8 text-xs font-bold uppercase tracking-[0.22em] text-white/55 md:flex">
+            <Link href="/deals" className="border-b-2 border-transparent pb-1 transition hover:border-orange-300 hover:text-orange-300">Deals</Link>
+            <a href="#about" className="border-b-2 border-transparent pb-1 transition hover:border-orange-300 hover:text-orange-300">About</a>
+            <a href="#footer" className="border-b-2 border-transparent pb-1 transition hover:border-orange-300 hover:text-orange-300">Contact</a>
           </div>
 
           <button
             type="button"
             onClick={() => setCartOpen(true)}
-            className="inline-flex items-center gap-3 rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-900 transition hover:border-orange-300 hover:text-orange-600"
+            className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:border-orange-300/40 hover:bg-white/10"
           >
-            <ShoppingBag className="h-4 w-4" />
+            <ShoppingBag className="h-4 w-4 text-orange-300" />
             Cart
             <span className="inline-flex min-w-6 items-center justify-center rounded-full bg-orange-500 px-1.5 py-1 text-xs font-bold text-white">
               {cartCount}
@@ -313,7 +314,7 @@ export function ChillingtonShowcase() {
                 Shop now
               </a>
               <a
-                href="https://wa.me/2347041249727"
+                href="https://wa.me/2347032891651"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-[1.35rem] border border-slate-300 bg-white px-6 py-4 text-base font-semibold text-slate-800 transition hover:border-orange-300 hover:text-orange-600"
@@ -667,7 +668,7 @@ export function ChillingtonShowcase() {
               <h3 className="text-sm font-black uppercase tracking-[0.22em] text-slate-900">Quick Order</h3>
               <p className="mt-6 text-sm leading-7 text-slate-600">Need to confirm delivery, ask a question, or place a direct order? Reach out on WhatsApp.</p>
               <a
-                href="https://wa.me/2347041249727"
+                href="https://wa.me/2347032891651"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-5 inline-flex items-center gap-2 rounded-[1.35rem] bg-green-500 px-6 py-4 text-sm font-semibold text-white transition hover:bg-green-600"
@@ -783,7 +784,7 @@ export function ChillingtonShowcase() {
                   </div>
 
                   <a
-                    href={`https://wa.me/2347041249727?text=${encodeURIComponent(
+                    href={`https://wa.me/2347032891651?text=${encodeURIComponent(
                       [
                         "Hello, I want to order:",
                         "",

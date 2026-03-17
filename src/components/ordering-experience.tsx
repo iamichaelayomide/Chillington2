@@ -50,24 +50,10 @@ export function OrderingExperience({
                 Browse by protein, open a product, choose your size, add extras and keep the cart live while you order.
               </p>
             </div>
-            <div className="grid gap-3 sm:grid-cols-3">
-              <div className="rounded-[1.5rem] border border-orange-200 bg-white p-4">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-600">Most ordered</p>
-                <p className="mt-2 font-heading text-xl font-black text-slate-900">Chicken Jumbo</p>
-              </div>
-              <div className="rounded-[1.5rem] border border-orange-200 bg-white p-4">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-600">Sauce move</p>
-                <p className="mt-2 font-heading text-xl font-black text-slate-900">Extra cream + sausage</p>
-              </div>
-              <div className="rounded-[1.5rem] border border-orange-200 bg-white p-4">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-600">Quick win</p>
-                <p className="mt-2 font-heading text-xl font-black text-slate-900">Combo box at night</p>
-              </div>
-            </div>
             <button
               type="button"
               onClick={openDrawer}
-              className="flex w-full items-center justify-between rounded-[1.5rem] border border-orange-200 bg-white px-5 py-4 text-left shadow-soft"
+              className="flex w-full items-center justify-between rounded-[1.5rem] border border-white/10 bg-[#121212] px-5 py-4 text-left shadow-[0_20px_45px_rgba(0,0,0,0.22)]"
             >
               <span className="flex items-center gap-3">
                 <span className="rounded-full bg-orange-500 p-3 text-white">
@@ -75,21 +61,21 @@ export function OrderingExperience({
                 </span>
                 <span>
                   <span className="block text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Open cart</span>
-                  <span className="text-sm font-semibold text-slate-900">{totals.quantity} item(s)</span>
+                  <span className="text-sm font-semibold text-white">{totals.quantity} item(s)</span>
                 </span>
               </span>
-              <span className="font-heading text-2xl font-black text-slate-900">{formatCurrency(totals.total)}</span>
+              <span className="font-heading text-2xl font-black text-white">{formatCurrency(totals.total)}</span>
             </button>
             {claimedDeal ? (
-              <div className="rounded-[1.5rem] border border-green-200 bg-green-50 p-5">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-green-700">Claimed deal</p>
+              <div className="rounded-[1.5rem] border border-emerald-400/20 bg-[linear-gradient(135deg,rgba(19,66,45,0.96),rgba(12,18,15,0.98))] p-5">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-100/80">Claimed deal</p>
                 <div className="mt-2 flex flex-wrap items-center gap-3">
-                  <p className="font-heading text-2xl font-black text-slate-900">{claimedDeal.title}</p>
-                  <span className="rounded-full bg-white px-3 py-2 text-xs font-bold uppercase tracking-[0.18em] text-green-700">
+                  <p className="font-heading text-2xl font-black text-white">{claimedDeal.title}</p>
+                  <span className="rounded-full bg-white px-3 py-2 text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">
                     Max {claimedDeal.max_quantity}
                   </span>
                 </div>
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-700">
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-emerald-50/85">
                   This claim is locked to {claimedDeal.product_name} ({claimedDeal.size}) at {formatCurrency(claimedDeal.deal_price)}.
                   You can add up to {claimedDeal.max_quantity} before checkout.
                 </p>

@@ -85,7 +85,7 @@ export default async function DealDetailPage({ params }: { params: Promise<{ slu
                   This deal is active now. Open WhatsApp and send the locked offer through directly.
                 </div>
                 <a
-                  href={`https://wa.me/2347041249727?text=${message}`}
+                  href={`https://wa.me/2347032891651?text=${message}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex rounded-full bg-green-500 px-6 py-4 text-base font-semibold text-white transition hover:bg-green-600"

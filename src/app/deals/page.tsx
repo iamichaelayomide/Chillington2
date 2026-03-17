@@ -38,7 +38,7 @@ export default function DealsPage() {
           </div>
 
           <a
-            href="https://wa.me/2347041249727"
+            href="https://wa.me/2347032891651"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-900 transition hover:border-orange-300 hover:text-orange-600"

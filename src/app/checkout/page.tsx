@@ -68,7 +68,7 @@ export default function CheckoutPage() {
 
       message += `\n*Total:* ₦${total.toLocaleString()}`;
 
-      const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '2348000000000';
+      const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '2347032891651';
       const encodedMessage = encodeURIComponent(message);
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
