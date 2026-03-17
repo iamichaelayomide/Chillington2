@@ -6,3 +6,9 @@ node_modules
 !.env.example
 coverage
 dist
+
+.vercel
+*.log
+*.err.log
+
+.vercel
