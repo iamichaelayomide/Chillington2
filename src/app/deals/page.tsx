@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Flame, Menu, ShoppingBag, Sparkles, X } from "lucide-react";
 import { deals } from "@/lib/deals-data";
 import { formatCurrency } from "@/lib/format";
@@ -13,9 +16,23 @@ function formatDealDate(value: string) {
 }
 
 export default function DealsPage() {
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const ongoingDeals = deals.filter((deal) => deal.status === "ongoing");
   const upcomingDeals = deals.filter((deal) => deal.status === "coming-soon");
   const pausedDeals = deals.filter((deal) => deal.status === "sold-out" || deal.status === "expired");
+
+  useEffect(() => {
+    if (!mobileNavOpen) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [mobileNavOpen]);
 
   return (
     <main className="min-h-screen bg-[#edf2f7] text-neutral-900">
@@ -38,44 +55,14 @@ export default function DealsPage() {
           </div>
 
           <div className="flex items-center gap-2">
-            <details className="relative md:hidden">
-              <summary className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-900 transition hover:border-orange-300 hover:text-orange-600 [&::-webkit-details-marker]:hidden">
+            <button
+              type="button"
+              onClick={() => setMobileNavOpen(true)}
+              aria-label="Open navigation menu"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-900 transition hover:border-orange-300 hover:text-orange-600 md:hidden"
+            >
                 <Menu className="h-5 w-5" />
-              </summary>
-              <div className="absolute right-0 top-14 w-[min(18rem,calc(100vw-2rem))] rounded-[1.5rem] border border-slate-200 bg-white p-3 shadow-xl">
-                <div className="mb-2 flex items-center justify-between rounded-[1.1rem] bg-slate-50 px-3 py-3">
-                  <div>
-                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-orange-500">Navigation</p>
-                    <p className="mt-1 text-sm font-medium text-slate-600">Mobile quick links</p>
-                  </div>
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500">
-                    <X className="h-4 w-4" />
-                  </span>
-                </div>
-                <div className="grid gap-2">
-                  <Link href="/" className="rounded-[1rem] border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:border-orange-300 hover:text-orange-600">
-                    Home
-                  </Link>
-                  <Link href="/deals" className="rounded-[1rem] border border-orange-200 bg-orange-50 px-4 py-3 text-sm font-semibold text-orange-600">
-                    Deals
-                  </Link>
-                  <Link href="/#about" className="rounded-[1rem] border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:border-orange-300 hover:text-orange-600">
-                    About
-                  </Link>
-                  <Link href="/#footer" className="rounded-[1rem] border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:border-orange-300 hover:text-orange-600">
-                    Contact
-                  </Link>
-                  <a
-                    href="https://wa.me/2347032891651"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-[1rem] bg-green-500 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-green-600"
-                  >
-                    Contact us
-                  </a>
-                </div>
-              </div>
-            </details>
+            </button>
 
             <a
               href="https://wa.me/2347032891651"
@@ -89,6 +76,73 @@ export default function DealsPage() {
           </div>
         </div>
       </header>
+
+      {mobileNavOpen ? (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <button
+            type="button"
+            aria-label="Close navigation menu"
+            onClick={() => setMobileNavOpen(false)}
+            className="absolute inset-0 bg-black/45 backdrop-blur-sm"
+          />
+          <aside className="absolute inset-x-4 top-4 rounded-[2rem] border border-slate-200 bg-white p-4 shadow-2xl">
+            <div className="flex items-center justify-between rounded-[1.2rem] bg-slate-50 px-4 py-3">
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-orange-500">Navigation</p>
+                <p className="mt-1 text-sm font-medium text-slate-600">Mobile quick links</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setMobileNavOpen(false)}
+                aria-label="Close navigation menu"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:border-orange-300 hover:text-orange-600"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="mt-4 grid gap-2">
+              <Link
+                href="/"
+                onClick={() => setMobileNavOpen(false)}
+                className="rounded-[1rem] border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:border-orange-300 hover:text-orange-600"
+              >
+                Home
+              </Link>
+              <Link
+                href="/deals"
+                onClick={() => setMobileNavOpen(false)}
+                className="rounded-[1rem] border border-orange-200 bg-orange-50 px-4 py-3 text-sm font-semibold text-orange-600"
+              >
+                Deals
+              </Link>
+              <Link
+                href="/#about"
+                onClick={() => setMobileNavOpen(false)}
+                className="rounded-[1rem] border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:border-orange-300 hover:text-orange-600"
+              >
+                About
+              </Link>
+              <Link
+                href="/#footer"
+                onClick={() => setMobileNavOpen(false)}
+                className="rounded-[1rem] border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:border-orange-300 hover:text-orange-600"
+              >
+                Contact
+              </Link>
+              <a
+                href="https://wa.me/2347032891651"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileNavOpen(false)}
+                className="rounded-[1rem] bg-green-500 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-green-600"
+              >
+                Contact us
+              </a>
+            </div>
+          </aside>
+        </div>
+      ) : null}
 
       <section className="px-4 pb-16 pt-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl space-y-8">

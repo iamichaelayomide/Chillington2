@@ -216,6 +216,19 @@ export function ChillingtonShowcase() {
     };
   }, [filteredSections.length]);
 
+  useEffect(() => {
+    if (!mobileNavOpen) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [mobileNavOpen]);
+
   function getSelectedSize(item: MenuItem) {
     return selectedSizes[item.id] ?? firstSize(item);
   }
@@ -303,75 +316,82 @@ export function ChillingtonShowcase() {
           </div>
         </div>
 
-        {mobileNavOpen ? (
-          <div className="border-t border-white/10 bg-[#090909]/98 px-4 py-4 md:hidden">
-            <div className="mx-auto max-w-7xl space-y-3">
-              <div className="flex items-center justify-between rounded-[1.4rem] border border-white/10 bg-white/[0.04] px-4 py-3">
-                <div>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-orange-300/80">Navigation</p>
-                  <p className="mt-1 text-sm font-semibold text-white/75">Browse the site on mobile</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setMobileNavOpen(false)}
-                  aria-label="Close navigation menu"
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-orange-300/40 hover:bg-white/10"
-                >
-                  <X className="h-4 w-4 text-orange-300" />
-                </button>
-              </div>
-
-              <div className="grid gap-2">
-                {[
-                  { href: "#menu", label: "Shop now" },
-                  { href: "/deals", label: "Deals", link: true },
-                  { href: "#about", label: "About" },
-                  { href: "#footer", label: "Contact" },
-                ].map((item) =>
-                  item.link ? (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setMobileNavOpen(false)}
-                      className="rounded-[1.2rem] border border-white/10 bg-white/[0.04] px-4 py-4 text-sm font-semibold text-white transition hover:border-orange-300/40 hover:text-orange-200"
-                    >
-                      {item.label}
-                    </Link>
-                  ) : (
-                    <a
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setMobileNavOpen(false)}
-                      className="rounded-[1.2rem] border border-white/10 bg-white/[0.04] px-4 py-4 text-sm font-semibold text-white transition hover:border-orange-300/40 hover:text-orange-200"
-                    >
-                      {item.label}
-                    </a>
-                  ),
-                )}
-              </div>
-
-              <div className="grid gap-2 sm:grid-cols-2">
-                <Link
-                  href="/deals/jumbo-chicken-rush"
-                  onClick={() => setMobileNavOpen(false)}
-                  className="rounded-[1.2rem] bg-orange-500 px-4 py-4 text-center text-sm font-semibold text-white transition hover:bg-orange-400"
-                >
-                  Buy live deal
-                </Link>
-                <a
-                  href="https://wa.me/2347032891651"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setMobileNavOpen(false)}
-                  className="rounded-[1.2rem] border border-emerald-400/30 bg-emerald-500/15 px-4 py-4 text-center text-sm font-semibold text-emerald-100 transition hover:border-emerald-300/60 hover:bg-emerald-500/20"
-                >
-                  Contact us
-                </a>
-              </div>
-            </div>
-          </div>
-        ) : null}
       </header>
+
+      {mobileNavOpen ? (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <button
+            type="button"
+            aria-label="Close navigation menu"
+            onClick={() => setMobileNavOpen(false)}
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+          />
+          <aside className="absolute inset-x-4 top-4 rounded-[2rem] border border-white/10 bg-[#0b0b0b] p-4 shadow-[0_30px_100px_rgba(0,0,0,0.65)]">
+            <div className="flex items-center justify-between rounded-[1.4rem] border border-white/10 bg-white/[0.04] px-4 py-3">
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-orange-300/80">Navigation</p>
+                <p className="mt-1 text-sm font-semibold text-white/75">Browse the site on mobile</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setMobileNavOpen(false)}
+                aria-label="Close navigation menu"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-orange-300/40 hover:bg-white/10"
+              >
+                <X className="h-4 w-4 text-orange-300" />
+              </button>
+            </div>
+
+            <div className="mt-4 grid gap-2">
+              {[
+                { href: "#menu", label: "Shop now" },
+                { href: "/deals", label: "Deals", link: true },
+                { href: "#about", label: "About" },
+                { href: "#footer", label: "Contact" },
+              ].map((item) =>
+                item.link ? (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileNavOpen(false)}
+                    className="rounded-[1.2rem] border border-white/10 bg-white/[0.04] px-4 py-4 text-sm font-semibold text-white transition hover:border-orange-300/40 hover:text-orange-200"
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileNavOpen(false)}
+                    className="rounded-[1.2rem] border border-white/10 bg-white/[0.04] px-4 py-4 text-sm font-semibold text-white transition hover:border-orange-300/40 hover:text-orange-200"
+                  >
+                    {item.label}
+                  </a>
+                ),
+              )}
+            </div>
+
+            <div className="mt-4 grid gap-2">
+              <Link
+                href="/deals/jumbo-chicken-rush"
+                onClick={() => setMobileNavOpen(false)}
+                className="rounded-[1.2rem] bg-orange-500 px-4 py-4 text-center text-sm font-semibold text-white transition hover:bg-orange-400"
+              >
+                Buy live deal
+              </Link>
+              <a
+                href="https://wa.me/2347032891651"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileNavOpen(false)}
+                className="rounded-[1.2rem] border border-emerald-400/30 bg-emerald-500/15 px-4 py-4 text-center text-sm font-semibold text-emerald-100 transition hover:border-emerald-300/60 hover:bg-emerald-500/20"
+              >
+                Contact us
+              </a>
+            </div>
+          </aside>
+        </div>
+      ) : null}
 
       <section className="px-4 pb-10 pt-8 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[1fr_1.05fr]">
@@ -673,14 +693,14 @@ export function ChillingtonShowcase() {
         </div>
       </section>
 
-      <section id="about" className="bg-slate-950 px-4 py-20 text-white sm:px-6 lg:px-8">
+      <section id="about" className="px-4 py-20 text-white sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-          <div className="relative min-h-[360px] overflow-hidden rounded-[2rem] bg-[#1e293b] sm:min-h-[440px] lg:min-h-[520px]">
+          <div className="relative min-h-[360px] overflow-hidden rounded-[2rem] border border-white/10 bg-[#1b1512] shadow-[0_25px_60px_rgba(0,0,0,0.4)] sm:min-h-[440px] lg:min-h-[520px]">
             <Image
               src="/images/food/platter.jpg"
               alt="Shawarma platter with fries"
               fill
-              className="object-cover"
+              className="object-cover saturate-[1.18] contrast-[1.06]"
               sizes="(max-width: 1024px) 100vw, 45vw"
             />
           </div>
@@ -690,13 +710,13 @@ export function ChillingtonShowcase() {
             <h2 className="mt-4 text-4xl font-black leading-tight sm:text-5xl">
               Pharm. Joseph
               <br />
-              <span className="text-orange-500">Chillington&apos;s</span>
+              <span className="text-orange-400">Chillington&apos;s</span>
               <br />
               signature recipe.
             </h2>
 
-            <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300">
-              This V2 route is now fully self-contained in your codebase. No remote design embeds, no third-party image links, and no dependency on outside hosts to render the page.
+            <p className="mt-6 max-w-2xl text-base leading-8 text-white/62">
+              The structure stays simple: browse, pick, customise, and order fast. The new direction just gives the brand a darker, richer frame so the food carries more weight visually.
             </p>
 
             <ul className="mt-8 space-y-3">
@@ -706,7 +726,7 @@ export function ChillingtonShowcase() {
                 "Built for Akure cravings and fast WhatsApp checkout",
                 "Wraps prepared hot, filled generously, and packed clean",
               ].map((point) => (
-                <li key={point} className="flex items-start gap-3 text-sm text-slate-300">
+                <li key={point} className="flex items-start gap-3 text-sm text-white/68">
                   <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-orange-500">
                     <Check className="h-3.5 w-3.5 text-white" />
                   </span>
@@ -718,54 +738,54 @@ export function ChillingtonShowcase() {
         </div>
       </section>
 
-      <footer id="footer" className="border-t border-orange-100 bg-white px-4 pb-8 pt-16 sm:px-6 lg:px-8">
+      <footer id="footer" className="border-t border-white/8 bg-[#0a0a0a] px-4 pb-8 pt-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 grid gap-12 md:grid-cols-3">
             <div className="space-y-5">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-orange-500 text-white shadow-lg shadow-orange-200">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full border border-orange-400/40 bg-orange-500/15 text-orange-300 shadow-[0_0_24px_rgba(249,115,22,0.35)]">
                   <Flame className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-orange-500">Chillington</p>
-                  <p className="text-lg font-black uppercase tracking-tight text-neutral-950">Bites V2</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-orange-300/80">Chillington</p>
+                  <p className="text-lg font-black uppercase tracking-tight text-white">Bites V2</p>
                 </div>
               </div>
-              <p className="text-sm leading-7 text-slate-600">
-                A local-only recreation route for Chillington Bites. Same mood, same ordering flow, no external image or design dependency.
+              <p className="text-sm leading-7 text-white/55">
+                Darker surface, same ordering flow, and a stronger product-first presentation for Chillington Bites.
               </p>
               <div className="flex gap-3">
-                <a href="https://www.facebook.com/ChillingtonShawarma" target="_blank" rel="noopener noreferrer" className="rounded-xl bg-neutral-100 p-3 text-neutral-600 transition hover:bg-orange-500 hover:text-white">
+                <a href="https://www.facebook.com/ChillingtonShawarma" target="_blank" rel="noopener noreferrer" className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-white/65 transition hover:border-orange-300/40 hover:bg-orange-500 hover:text-white">
                   <Facebook className="h-4 w-4" />
                 </a>
-                <a href="https://www.instagram.com/chillington_bites" target="_blank" rel="noopener noreferrer" className="rounded-xl bg-neutral-100 p-3 text-neutral-600 transition hover:bg-orange-500 hover:text-white">
+                <a href="https://www.instagram.com/chillington_bites" target="_blank" rel="noopener noreferrer" className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-white/65 transition hover:border-orange-300/40 hover:bg-orange-500 hover:text-white">
                   <Instagram className="h-4 w-4" />
                 </a>
               </div>
             </div>
 
             <div>
-              <h3 className="text-sm font-black uppercase tracking-[0.22em] text-slate-900">Contact &amp; Hours</h3>
-              <ul className="mt-6 space-y-4 text-sm text-slate-600">
+              <h3 className="text-sm font-black uppercase tracking-[0.22em] text-white">Contact &amp; Hours</h3>
+              <ul className="mt-6 space-y-4 text-sm text-white/58">
                 <li className="flex items-start gap-3">
-                  <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-orange-500" />
+                  <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-orange-300" />
                   <span>No.1 HACO Building, Ori-Eguru Street, Arakale, Akure, Ondo State</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <Clock3 className="h-4 w-4 flex-shrink-0 text-orange-500" />
+                  <Clock3 className="h-4 w-4 flex-shrink-0 text-orange-300" />
                   <span>Open daily. WhatsApp confirms delivery windows.</span>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="text-sm font-black uppercase tracking-[0.22em] text-slate-900">Quick Order</h3>
-              <p className="mt-6 text-sm leading-7 text-slate-600">Need to confirm delivery, ask a question, or place a direct order? Reach out on WhatsApp.</p>
+              <h3 className="text-sm font-black uppercase tracking-[0.22em] text-white">Quick Order</h3>
+              <p className="mt-6 text-sm leading-7 text-white/58">Need to confirm delivery, ask a question, or place a direct order? Reach out on WhatsApp.</p>
               <a
                 href="https://wa.me/2347032891651"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-2 rounded-[1.35rem] bg-green-500 px-6 py-4 text-sm font-semibold text-white transition hover:bg-green-600"
+                className="mt-5 inline-flex items-center gap-2 rounded-[1.35rem] bg-emerald-500 px-6 py-4 text-sm font-semibold text-white transition hover:bg-emerald-400"
               >
                 <ShoppingBag className="h-4 w-4" />
                 Contact us
@@ -773,7 +793,7 @@ export function ChillingtonShowcase() {
             </div>
           </div>
 
-          <div className="flex flex-col items-center justify-between gap-3 border-t border-orange-100 pt-6 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400 md:flex-row">
+          <div className="flex flex-col items-center justify-between gap-3 border-t border-white/8 pt-6 text-[11px] font-bold uppercase tracking-[0.18em] text-white/35 md:flex-row">
             <p>© 2026 Chillington Bites.</p>
             <p>Local V2 route ready for testing.</p>
           </div>
@@ -784,7 +804,7 @@ export function ChillingtonShowcase() {
         <button
           type="button"
           onClick={() => setCartOpen(true)}
-          className="fixed bottom-6 right-6 z-30 inline-flex items-center gap-3 rounded-full bg-slate-950 px-5 py-4 text-sm font-bold text-white shadow-2xl lg:hidden"
+          className="fixed bottom-6 right-6 z-30 inline-flex items-center gap-3 rounded-full bg-white px-5 py-4 text-sm font-bold text-[#110b08] shadow-[0_18px_50px_rgba(0,0,0,0.45)] lg:hidden"
         >
           <ShoppingBag className="h-4 w-4" />
           <span>{cartCount}</span>
@@ -794,52 +814,52 @@ export function ChillingtonShowcase() {
 
       {cartOpen ? (
         <div className="fixed inset-0 z-50">
-          <button type="button" aria-label="Close cart" onClick={() => setCartOpen(false)} className="absolute inset-0 bg-slate-950/55" />
-          <aside className="absolute bottom-0 right-0 top-0 flex w-full max-w-md flex-col bg-white shadow-2xl">
-            <div className="flex items-center justify-between border-b border-orange-100 px-6 py-5">
+          <button type="button" aria-label="Close cart" onClick={() => setCartOpen(false)} className="absolute inset-0 bg-black/70" />
+          <aside className="absolute bottom-0 right-0 top-0 flex w-full max-w-md flex-col border-l border-white/10 bg-[#0f0f0f] shadow-2xl">
+            <div className="flex items-center justify-between border-b border-white/10 px-6 py-5">
               <div className="flex items-center gap-3">
-                <ShoppingBag className="h-5 w-5 text-orange-500" />
+                <ShoppingBag className="h-5 w-5 text-orange-300" />
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-600">Your order</p>
-                  <h3 className="text-lg font-black text-slate-950">Cart</h3>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-300">Your order</p>
+                  <h3 className="text-lg font-black text-white">Cart</h3>
                 </div>
               </div>
-              <button type="button" onClick={() => setCartOpen(false)} className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:border-orange-300 hover:text-orange-600">
+              <button type="button" onClick={() => setCartOpen(false)} className="rounded-full border border-white/10 p-2 text-white/55 transition hover:border-orange-300/40 hover:text-orange-200">
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {!cart.length ? (
               <div className="flex flex-1 flex-col items-center justify-center px-8 text-center">
-                <div className="rounded-full bg-orange-50 p-5">
-                  <ShoppingBag className="h-8 w-8 text-orange-500" />
+                <div className="rounded-full bg-white/[0.04] p-5">
+                  <ShoppingBag className="h-8 w-8 text-orange-300" />
                 </div>
-                <p className="mt-5 text-2xl font-black text-slate-950">Your cart is empty</p>
-                <p className="mt-2 text-sm leading-7 text-slate-600">Pick a shawarma, switch a size, then come back here to review it.</p>
+                <p className="mt-5 text-2xl font-black text-white">Your cart is empty</p>
+                <p className="mt-2 text-sm leading-7 text-white/55">Pick a shawarma, switch a size, then come back here to review it.</p>
               </div>
             ) : (
               <>
                 <div className="flex-1 space-y-4 overflow-y-auto p-6">
                   {cart.map((item) => (
-                    <div key={lineId(item.id, item.size)} className="flex gap-4 rounded-[1.5rem] border border-orange-100 bg-orange-50/60 p-3">
-                      <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-[1.1rem] bg-white">
-                        <Image src={item.image} alt={item.name} fill className="object-cover" sizes="80px" />
+                    <div key={lineId(item.id, item.size)} className="flex gap-4 rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-3">
+                      <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-[1.1rem] bg-black">
+                        <Image src={item.image} alt={item.name} fill className="object-cover saturate-[1.12]" sizes="80px" />
                       </div>
 
                       <div className="flex flex-1 flex-col justify-between">
                         <div>
-                          <p className="text-sm font-black text-slate-950">{item.name}</p>
+                          <p className="text-sm font-black text-white">{item.name}</p>
                           <p className="mt-1 text-xs font-semibold uppercase tracking-[0.15em] text-slate-500">
                             {sizeLabels[item.size]} · {formatCurrency(item.price)}
                           </p>
                         </div>
 
                         <div className="mt-3 flex items-center justify-between">
-                          <div className="flex items-center gap-2 rounded-full bg-white p-1">
-                            <button type="button" onClick={() => removeFromCart(item.id, item.size)} className="rounded-full p-2 text-slate-600 transition hover:bg-orange-50 hover:text-orange-600">
+                          <div className="flex items-center gap-2 rounded-full bg-white/[0.06] p-1">
+                            <button type="button" onClick={() => removeFromCart(item.id, item.size)} className="rounded-full p-2 text-white/65 transition hover:bg-white/10 hover:text-orange-200">
                               <Minus className="h-3.5 w-3.5" />
                             </button>
-                            <span className="min-w-5 text-center text-sm font-black text-slate-950">{item.quantity}</span>
+                            <span className="min-w-5 text-center text-sm font-black text-white">{item.quantity}</span>
                             <button
                               type="button"
                               onClick={() => {
@@ -848,30 +868,30 @@ export function ChillingtonShowcase() {
                                   addToCart(source, item.size);
                                 }
                               }}
-                              className="rounded-full p-2 text-slate-600 transition hover:bg-orange-50 hover:text-orange-600"
+                              className="rounded-full p-2 text-white/65 transition hover:bg-white/10 hover:text-orange-200"
                             >
                               <Plus className="h-3.5 w-3.5" />
                             </button>
                           </div>
 
-                          <p className="text-sm font-black text-slate-950">{formatCurrency(item.quantity * item.price)}</p>
+                          <p className="text-sm font-black text-white">{formatCurrency(item.quantity * item.price)}</p>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="border-t border-orange-100 bg-orange-50/60 p-6">
+                <div className="border-t border-white/10 bg-white/[0.03] p-6">
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm text-slate-600">
+                    <div className="flex items-center justify-between text-sm text-white/55">
                       <span>Subtotal</span>
                       <span>{formatCurrency(cartTotal)}</span>
                     </div>
-                    <div className="flex items-center justify-between text-sm text-slate-600">
+                    <div className="flex items-center justify-between text-sm text-white/55">
                       <span>Delivery</span>
                       <span>To confirm</span>
                     </div>
-                    <div className="flex items-center justify-between border-t border-orange-100 pt-3 text-lg font-black text-slate-950">
+                    <div className="flex items-center justify-between border-t border-white/10 pt-3 text-lg font-black text-white">
                       <span>Total</span>
                       <span>{formatCurrency(cartTotal)}</span>
                     </div>
@@ -889,7 +909,7 @@ export function ChillingtonShowcase() {
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-5 flex items-center justify-center gap-2 rounded-[1.35rem] bg-orange-500 px-6 py-4 text-sm font-semibold text-white transition hover:bg-orange-600"
+                    className="mt-5 flex items-center justify-center gap-2 rounded-[1.35rem] bg-orange-500 px-6 py-4 text-sm font-semibold text-white transition hover:bg-orange-400"
                   >
                     Send order to WhatsApp
                     <ChevronRight className="h-4 w-4" />
