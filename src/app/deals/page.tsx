@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Flame, ShoppingBag, Sparkles } from "lucide-react";
+import { Flame, Menu, ShoppingBag, Sparkles, X } from "lucide-react";
 import { deals } from "@/lib/deals-data";
 import { formatCurrency } from "@/lib/format";
 
@@ -37,15 +37,56 @@ export default function DealsPage() {
             <Link href="/#footer" className="border-b-2 border-transparent pb-1 transition hover:border-orange-300 hover:text-orange-500">Contact</Link>
           </div>
 
-          <a
-            href="https://wa.me/2347032891651"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-900 transition hover:border-orange-300 hover:text-orange-600"
-          >
-            <ShoppingBag className="h-4 w-4" />
-            Contact us
-          </a>
+          <div className="flex items-center gap-2">
+            <details className="relative md:hidden">
+              <summary className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-900 transition hover:border-orange-300 hover:text-orange-600 [&::-webkit-details-marker]:hidden">
+                <Menu className="h-5 w-5" />
+              </summary>
+              <div className="absolute right-0 top-14 w-[min(18rem,calc(100vw-2rem))] rounded-[1.5rem] border border-slate-200 bg-white p-3 shadow-xl">
+                <div className="mb-2 flex items-center justify-between rounded-[1.1rem] bg-slate-50 px-3 py-3">
+                  <div>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-orange-500">Navigation</p>
+                    <p className="mt-1 text-sm font-medium text-slate-600">Mobile quick links</p>
+                  </div>
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500">
+                    <X className="h-4 w-4" />
+                  </span>
+                </div>
+                <div className="grid gap-2">
+                  <Link href="/" className="rounded-[1rem] border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:border-orange-300 hover:text-orange-600">
+                    Home
+                  </Link>
+                  <Link href="/deals" className="rounded-[1rem] border border-orange-200 bg-orange-50 px-4 py-3 text-sm font-semibold text-orange-600">
+                    Deals
+                  </Link>
+                  <Link href="/#about" className="rounded-[1rem] border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:border-orange-300 hover:text-orange-600">
+                    About
+                  </Link>
+                  <Link href="/#footer" className="rounded-[1rem] border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:border-orange-300 hover:text-orange-600">
+                    Contact
+                  </Link>
+                  <a
+                    href="https://wa.me/2347032891651"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-[1rem] bg-green-500 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-green-600"
+                  >
+                    Contact us
+                  </a>
+                </div>
+              </div>
+            </details>
+
+            <a
+              href="https://wa.me/2347032891651"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-900 transition hover:border-orange-300 hover:text-orange-600"
+            >
+              <ShoppingBag className="h-4 w-4" />
+              <span className="hidden sm:inline">Contact us</span>
+            </a>
+          </div>
         </div>
       </header>
 
