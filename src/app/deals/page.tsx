@@ -35,23 +35,23 @@ export default function DealsPage() {
   }, [mobileNavOpen]);
 
   return (
-    <main className="min-h-screen bg-[#edf2f7] text-neutral-900">
-      <header className="sticky top-0 z-40 border-b border-slate-200 bg-[#edf2f7]/95 backdrop-blur">
+    <main className="min-h-screen bg-transparent text-[#f7f1e8]">
+      <header className="sticky top-0 z-40 border-b border-white/10 bg-[#090909]/85 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-orange-500 text-white shadow-lg shadow-orange-200">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full border border-orange-400/40 bg-orange-500/15 text-orange-300 shadow-[0_0_24px_rgba(249,115,22,0.35)]">
               <Flame className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-orange-500">Chillington</p>
-              <p className="text-lg font-black uppercase tracking-tight text-neutral-950">Bites V2</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-orange-300/80">Chillington</p>
+              <p className="text-lg font-black uppercase tracking-tight text-white">Bites V2</p>
             </div>
           </Link>
 
-          <div className="hidden items-center gap-8 text-xs font-bold uppercase tracking-[0.22em] text-neutral-500 md:flex">
-            <Link href="/deals" className="border-b-2 border-orange-500 pb-1 text-orange-600">Deals</Link>
-            <Link href="/#about" className="border-b-2 border-transparent pb-1 transition hover:border-orange-300 hover:text-orange-500">About</Link>
-            <Link href="/#footer" className="border-b-2 border-transparent pb-1 transition hover:border-orange-300 hover:text-orange-500">Contact</Link>
+          <div className="hidden items-center gap-8 text-xs font-bold uppercase tracking-[0.22em] text-white/55 md:flex">
+            <Link href="/deals" className="border-b-2 border-orange-400 pb-1 text-orange-200">Deals</Link>
+            <Link href="/#about" className="border-b-2 border-transparent pb-1 transition hover:border-orange-300 hover:text-orange-300">About</Link>
+            <Link href="/#footer" className="border-b-2 border-transparent pb-1 transition hover:border-orange-300 hover:text-orange-300">Contact</Link>
           </div>
 
           <div className="flex items-center gap-2">
@@ -59,7 +59,7 @@ export default function DealsPage() {
               type="button"
               onClick={() => setMobileNavOpen(true)}
               aria-label="Open navigation menu"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-900 transition hover:border-orange-300 hover:text-orange-600 md:hidden"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-orange-300/40 hover:text-orange-200 md:hidden"
             >
                 <Menu className="h-5 w-5" />
             </button>
@@ -68,7 +68,7 @@ export default function DealsPage() {
               href="https://wa.me/2347032891651"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-900 transition hover:border-orange-300 hover:text-orange-600"
+              className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:border-orange-300/40 hover:text-orange-200"
             >
               <ShoppingBag className="h-4 w-4" />
               <span className="hidden sm:inline">Contact us</span>
@@ -85,17 +85,17 @@ export default function DealsPage() {
             onClick={() => setMobileNavOpen(false)}
             className="absolute inset-0 bg-black/45 backdrop-blur-sm"
           />
-          <aside className="absolute inset-x-4 top-4 rounded-[2rem] border border-slate-200 bg-white p-4 shadow-2xl">
-            <div className="flex items-center justify-between rounded-[1.2rem] bg-slate-50 px-4 py-3">
+          <aside className="absolute inset-x-4 top-4 rounded-[2rem] border border-white/10 bg-[#121212] p-4 shadow-2xl">
+            <div className="flex items-center justify-between rounded-[1.2rem] bg-white/[0.04] px-4 py-3">
               <div>
                 <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-orange-500">Navigation</p>
-                <p className="mt-1 text-sm font-medium text-slate-600">Mobile quick links</p>
+                <p className="mt-1 text-sm font-medium text-white/55">Mobile quick links</p>
               </div>
               <button
                 type="button"
                 onClick={() => setMobileNavOpen(false)}
                 aria-label="Close navigation menu"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:border-orange-300 hover:text-orange-600"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white/55 transition hover:border-orange-300/40 hover:text-orange-200"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -105,14 +105,14 @@ export default function DealsPage() {
               <Link
                 href="/"
                 onClick={() => setMobileNavOpen(false)}
-                className="rounded-[1rem] border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:border-orange-300 hover:text-orange-600"
+                className="rounded-[1rem] border border-white/10 px-4 py-3 text-sm font-semibold text-white transition hover:border-orange-300/40 hover:text-orange-200"
               >
                 Home
               </Link>
               <Link
                 href="/deals"
                 onClick={() => setMobileNavOpen(false)}
-                className="rounded-[1rem] border border-orange-200 bg-orange-50 px-4 py-3 text-sm font-semibold text-orange-600"
+                className="rounded-[1rem] border border-orange-400/30 bg-orange-500/10 px-4 py-3 text-sm font-semibold text-orange-200"
               >
                 Deals
               </Link>
@@ -146,14 +146,14 @@ export default function DealsPage() {
 
       <section className="px-4 pb-16 pt-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl space-y-8">
-          <section className="rounded-[2rem] border border-orange-100 bg-white p-6 shadow-sm sm:p-8">
+          <section className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.35)] sm:p-8">
             <div className="space-y-3">
               <p className="inline-flex items-center gap-2 rounded-full bg-orange-500 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-white">
                 <Sparkles className="h-3.5 w-3.5" />
                 Akure deal board
               </p>
-              <h1 className="text-4xl font-black text-slate-950 sm:text-5xl">Deals worth opening before they disappear.</h1>
-              <p className="max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
+              <h1 className="text-4xl font-black text-white sm:text-5xl">Deals worth opening before they disappear.</h1>
+              <p className="max-w-2xl text-sm leading-7 text-white/62 sm:text-base">
                 See what is live, what is coming next, and what already sold out. Open each deal to inspect the full offer and order through the locked customer flow.
               </p>
             </div>

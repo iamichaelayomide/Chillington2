@@ -26,15 +26,15 @@ export default async function DealDetailPage({ params }: { params: Promise<{ slu
   );
 
   return (
-    <main className="min-h-screen bg-[#faf8f5] px-4 pb-16 pt-8 text-neutral-900 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-transparent px-4 pb-16 pt-8 text-[#f7f1e8] sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="relative min-h-[460px] overflow-hidden rounded-[2rem] border border-orange-100 bg-white shadow-sm">
-          <Image src={deal.hero_image} alt={deal.title} fill className="object-cover" />
+        <div className="relative min-h-[460px] overflow-hidden rounded-[2rem] border border-white/10 bg-[#15100d] shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
+          <Image src={deal.hero_image} alt={deal.title} fill className="object-cover saturate-[1.2] contrast-[1.08]" />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />
           <div className="absolute left-6 top-6">
             <Link
               href="/deals"
-              className="inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-white"
+              className="inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-orange-50"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to deals
@@ -48,23 +48,23 @@ export default async function DealDetailPage({ params }: { params: Promise<{ slu
         </div>
 
         <div className="space-y-5">
-          <div className="rounded-[2rem] border border-orange-100 bg-white p-6 shadow-sm">
+          <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.25)]">
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-orange-600">Offer math</p>
             <div className="mt-4 grid gap-3 sm:grid-cols-3">
               <div className="rounded-[1.25rem] bg-orange-50 p-4">
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Original</p>
-                <p className="mt-2 text-2xl font-black text-slate-900">{formatCurrency(deal.original_price)}</p>
+                <p className="mt-2 text-2xl font-black text-white">{formatCurrency(deal.original_price)}</p>
               </div>
               <div className="rounded-[1.25rem] bg-green-50 p-4">
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-700">Deal</p>
-                <p className="mt-2 text-2xl font-black text-slate-900">{formatCurrency(deal.deal_price)}</p>
+                <p className="mt-2 text-2xl font-black text-white">{formatCurrency(deal.deal_price)}</p>
               </div>
               <div className="rounded-[1.25rem] bg-slate-100 p-4">
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-600">You save</p>
-                <p className="mt-2 text-2xl font-black text-slate-900">{formatCurrency(savings)}</p>
+                <p className="mt-2 text-2xl font-black text-white">{formatCurrency(savings)}</p>
               </div>
             </div>
-            <div className="mt-5 space-y-3 text-sm leading-6 text-slate-700">
+            <div className="mt-5 space-y-3 text-sm leading-6 text-white/68">
               <p>Product: {deal.product_name}</p>
               <p>Deal size: {deal.size}</p>
               <p>Maximum quantity: {deal.max_quantity}</p>
@@ -75,9 +75,9 @@ export default async function DealDetailPage({ params }: { params: Promise<{ slu
             </div>
           </div>
 
-          <div className="rounded-[2rem] border border-orange-100 bg-white p-6 shadow-sm">
+          <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.25)]">
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-orange-600">Deal details</p>
-            <p className="mt-3 text-sm leading-7 text-slate-700">{deal.description}</p>
+            <p className="mt-3 text-sm leading-7 text-white/68">{deal.description}</p>
 
             {deal.status === "ongoing" ? (
               <div className="mt-6 space-y-4">

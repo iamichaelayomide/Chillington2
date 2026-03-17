@@ -680,11 +680,11 @@ export function ChillingtonShowcase() {
                     <p className="mt-2 text-sm font-medium text-white/75">{testimonial.order}</p>
                   </div>
                   <div className="flex gap-1 text-orange-500">
-                    <span>★</span>
-                    <span>★</span>
-                    <span>★</span>
-                    <span>★</span>
-                    <span>★</span>
+                    <span>&#9733;</span>
+                    <span>&#9733;</span>
+                    <span>&#9733;</span>
+                    <span>&#9733;</span>
+                    <span>&#9733;</span>
                   </div>
                 </div>
               </article>
@@ -794,7 +794,7 @@ export function ChillingtonShowcase() {
           </div>
 
           <div className="flex flex-col items-center justify-between gap-3 border-t border-white/8 pt-6 text-[11px] font-bold uppercase tracking-[0.18em] text-white/35 md:flex-row">
-            <p>© 2026 Chillington Bites.</p>
+            <p>&copy; 2026 Chillington Bites.</p>
             <p>Local V2 route ready for testing.</p>
           </div>
         </div>
@@ -850,7 +850,7 @@ export function ChillingtonShowcase() {
                         <div>
                           <p className="text-sm font-black text-white">{item.name}</p>
                           <p className="mt-1 text-xs font-semibold uppercase tracking-[0.15em] text-slate-500">
-                            {sizeLabels[item.size]} · {formatCurrency(item.price)}
+                            {sizeLabels[item.size]} / {formatCurrency(item.price)}
                           </p>
                         </div>
 
@@ -923,5 +923,7 @@ export function ChillingtonShowcase() {
     </main>
   );
 }
+
+
 
 
