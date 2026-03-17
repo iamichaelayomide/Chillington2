@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Check,
   ChevronRight,
@@ -145,6 +145,7 @@ export function ChillingtonShowcase() {
   const [cartOpen, setCartOpen] = useState(false);
   const [selectedSizes, setSelectedSizes] = useState<Record<string, MenuSize>>({});
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [activeMenuSection, setActiveMenuSection] = useState("premium");
 
   const allItems = useMemo(() => [...premiumTreats, ...comboTreats, ...classicTreats], []);
 
@@ -176,6 +177,36 @@ export function ChillingtonShowcase() {
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartTotal = cart.reduce((sum, item) => sum + item.quantity * item.price, 0);
+
+  useEffect(() => {
+    const sectionIds = ["premium", "combo", "classic", "extras"];
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((section): section is HTMLElement => Boolean(section));
+
+    if (!sections.length) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visible?.target?.id) {
+          setActiveMenuSection(visible.target.id);
+        }
+      },
+      {
+        rootMargin: "-20% 0px -60% 0px",
+        threshold: [0.2, 0.45, 0.7],
+      },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [filteredSections.length]);
 
   function getSelectedSize(item: MenuItem) {
     return selectedSizes[item.id] ?? firstSize(item);
@@ -381,9 +412,13 @@ export function ChillingtonShowcase() {
                     <a
                       key={link.href}
                       href={link.href}
-                      className="block rounded-[1.2rem] border border-slate-200 px-4 py-3 transition hover:border-orange-300 hover:bg-orange-50"
+                      className={`block rounded-[1.2rem] border px-4 py-3 transition ${
+                        activeMenuSection === link.href.slice(1)
+                          ? "border-orange-300 bg-orange-50"
+                          : "border-slate-200 hover:border-orange-300 hover:bg-orange-50"
+                      }`}
                     >
-                      <p className="text-sm font-semibold text-slate-900">{link.label}</p>
+                      <p className={`text-sm font-semibold ${activeMenuSection === link.href.slice(1) ? "text-orange-700" : "text-slate-900"}`}>{link.label}</p>
                       <p className="mt-1 text-xs text-slate-500">{link.note}</p>
                     </a>
                   ))}
@@ -619,15 +654,16 @@ export function ChillingtonShowcase() {
 
             <div>
               <h3 className="text-sm font-black uppercase tracking-[0.22em] text-slate-900">Quick Order</h3>
-              <p className="mt-6 text-sm leading-7 text-slate-600">Use the cart flow here locally, then send your final order through WhatsApp.</p>
-              <button
-                type="button"
-                onClick={() => setCartOpen(true)}
+              <p className="mt-6 text-sm leading-7 text-slate-600">Need to confirm delivery, ask a question, or place a direct order? Reach out on WhatsApp.</p>
+              <a
+                href="https://wa.me/2347041249727"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="mt-5 inline-flex items-center gap-2 rounded-[1.35rem] bg-green-500 px-6 py-4 text-sm font-semibold text-white transition hover:bg-green-600"
               >
                 <ShoppingBag className="h-4 w-4" />
-                Open cart
-              </button>
+                Contact us
+              </a>
             </div>
           </div>
 
