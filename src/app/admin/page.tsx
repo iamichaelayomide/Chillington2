@@ -16,7 +16,7 @@ export default function AdminDashboard() {
           supabase.from('products').select('id', { count: 'exact' })
         ]);
 
-        const totalRevenue = ordersRes.data?.reduce((sum, order) => sum + Number(order.total), 0) || 0;
+        const totalRevenue = ordersRes.data?.reduce((sum: number, order: any) => sum + Number(order.total), 0) || 0;
         const totalOrders = ordersRes.data?.length || 0;
         const totalProducts = productsRes.count || 0;
 

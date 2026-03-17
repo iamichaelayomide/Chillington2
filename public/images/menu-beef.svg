@@ -1,0 +1,26 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="88" y1="60" x2="705" y2="528" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF7ED"/>
+      <stop offset="1" stop-color="#FECBA1"/>
+    </linearGradient>
+    <linearGradient id="wrap" x1="181" y1="134" x2="586" y2="438" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FDBA74"/>
+      <stop offset="1" stop-color="#9A3412"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" rx="28" fill="url(#bg)"/>
+  <circle cx="146" cy="470" r="118" fill="#22C55E" fill-opacity=".16"/>
+  <ellipse cx="398" cy="294" rx="242" ry="158" fill="#FFFDF8"/>
+  <rect x="184" y="138" width="430" height="304" rx="152" fill="url(#wrap)"/>
+  <path d="M246 233C301 206 359 194 419 198C454 201 479 217 491 244C507 282 503 326 478 360C451 397 406 418 357 417C304 416 258 391 238 352C226 330 228 266 246 233Z" fill="#7F1D1D"/>
+  <path d="M228 292C283 267 341 256 399 259C437 261 461 278 471 307C484 344 477 380 450 407C422 435 381 449 338 447C290 445 248 418 232 382C223 362 220 322 228 292Z" fill="#FDE68A"/>
+  <path d="M244 324C291 315 339 317 386 327C421 334 441 350 446 372C453 400 441 421 410 436C376 452 332 456 293 447C255 439 227 417 220 393C216 378 222 349 244 324Z" fill="#14532D"/>
+  <path d="M264 346C307 343 350 349 392 361C418 368 431 381 433 395C435 411 426 424 408 434C383 446 350 451 319 447C289 444 263 433 250 418C238 405 242 381 264 346Z" fill="#FFF7ED"/>
+  <path d="M228 198L552 198" stroke="#7C2D12" stroke-width="12" stroke-linecap="round" stroke-opacity=".48"/>
+  <path d="M228 235L552 235" stroke="#7C2D12" stroke-width="12" stroke-linecap="round" stroke-opacity=".38"/>
+  <path d="M228 272L552 272" stroke="#7C2D12" stroke-width="12" stroke-linecap="round" stroke-opacity=".28"/>
+  <circle cx="610" cy="452" r="48" fill="#16A34A"/>
+  <circle cx="610" cy="452" r="28" fill="#DCFCE7"/>
+  <rect x="168" y="448" width="464" height="54" rx="27" fill="#1F2937"/>
+</svg>

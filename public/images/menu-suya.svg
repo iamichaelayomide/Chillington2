@@ -1,0 +1,34 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="96" y1="66" x2="706" y2="524" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF7ED"/>
+      <stop offset="1" stop-color="#FCD34D"/>
+    </linearGradient>
+    <linearGradient id="wrap" x1="194" y1="132" x2="584" y2="442" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FB923C"/>
+      <stop offset="1" stop-color="#9A3412"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" rx="28" fill="url(#bg)"/>
+  <circle cx="652" cy="470" r="132" fill="#B45309" fill-opacity=".14"/>
+  <ellipse cx="398" cy="298" rx="242" ry="160" fill="#FFFDF8"/>
+  <rect x="194" y="138" width="414" height="304" rx="152" fill="url(#wrap)"/>
+  <path d="M244 242C299 209 357 195 416 199C451 201 476 218 489 245C506 281 503 326 479 361C453 399 411 420 364 420C311 420 263 393 241 352C228 328 229 278 244 242Z" fill="#7C2D12"/>
+  <path d="M230 299C283 271 340 257 397 259C435 261 459 278 470 307C484 344 478 380 452 407C424 435 383 449 339 448C291 446 248 418 232 381C223 361 221 325 230 299Z" fill="#FACC15"/>
+  <path d="M248 328C294 316 342 316 388 324C421 331 440 347 446 369C454 399 443 421 414 436C381 452 338 457 299 449C261 442 232 420 223 396C218 381 224 355 248 328Z" fill="#166534"/>
+  <path d="M264 350C306 345 349 350 391 361C417 368 431 381 433 395C435 411 428 424 411 433C387 446 354 451 322 447C291 443 264 432 252 417C241 404 244 383 264 350Z" fill="#FFF7ED"/>
+  <g stroke="#7C2D12" stroke-width="12" stroke-linecap="round">
+    <path d="M230 199L545 199" stroke-opacity=".54"/>
+    <path d="M229 236L544 236" stroke-opacity=".43"/>
+    <path d="M228 273L543 273" stroke-opacity=".31"/>
+  </g>
+  <g fill="#7C2D12" fill-opacity=".65">
+    <circle cx="255" cy="268" r="9"/>
+    <circle cx="295" cy="288" r="8"/>
+    <circle cx="336" cy="258" r="8"/>
+    <circle cx="375" cy="280" r="8"/>
+    <circle cx="418" cy="263" r="8"/>
+    <circle cx="458" cy="286" r="8"/>
+  </g>
+  <rect x="170" y="448" width="460" height="54" rx="27" fill="#1F2937"/>
+</svg>

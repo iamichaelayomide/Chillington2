@@ -1,0 +1,31 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="72" y1="56" x2="708" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF7ED"/>
+      <stop offset="1" stop-color="#FED7AA"/>
+    </linearGradient>
+    <linearGradient id="wrap" x1="184" y1="122" x2="584" y2="432" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBBF24"/>
+      <stop offset="1" stop-color="#C2410C"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" rx="28" fill="url(#bg)"/>
+  <circle cx="642" cy="118" r="112" fill="#FB923C" fill-opacity=".18"/>
+  <ellipse cx="398" cy="294" rx="246" ry="162" fill="#FFFDF8"/>
+  <rect x="180" y="144" width="438" height="300" rx="150" fill="url(#wrap)"/>
+  <path d="M233 246C286 216 342 200 399 201C435 202 462 216 477 244C497 281 495 327 471 362C445 399 401 421 352 421C299 421 251 394 232 353C222 332 222 289 233 246Z" fill="#7C2D12"/>
+  <path d="M220 304C273 274 331 259 390 260C433 261 460 278 471 309C484 345 476 381 449 408C421 435 379 448 335 444C286 439 243 410 228 373C220 353 216 331 220 304Z" fill="#FDE68A"/>
+  <path d="M238 330C283 317 332 316 380 323C414 328 434 344 440 367C448 396 438 419 410 435C378 453 335 458 296 449C258 441 229 420 221 396C215 377 222 353 238 330Z" fill="#166534"/>
+  <path d="M258 350C302 344 347 347 391 357C417 363 431 375 433 390C436 407 428 421 409 432C384 446 349 451 316 447C285 444 258 433 246 418C236 407 240 387 258 350Z" fill="#FFF7ED"/>
+  <path d="M222 191L542 191" stroke="#7C2D12" stroke-width="12" stroke-linecap="round" stroke-opacity=".45"/>
+  <path d="M222 228L542 228" stroke="#7C2D12" stroke-width="12" stroke-linecap="round" stroke-opacity=".38"/>
+  <path d="M222 265L542 265" stroke="#7C2D12" stroke-width="12" stroke-linecap="round" stroke-opacity=".3"/>
+  <g fill="#F59E0B">
+    <rect x="585" y="392" width="26" height="116" rx="13" transform="rotate(15 585 392)"/>
+    <rect x="618" y="378" width="26" height="122" rx="13" transform="rotate(22 618 378)"/>
+    <rect x="652" y="366" width="26" height="118" rx="13" transform="rotate(28 652 366)"/>
+  </g>
+  <circle cx="618" cy="470" r="42" fill="#F97316"/>
+  <circle cx="618" cy="470" r="24" fill="#FFE7CC"/>
+  <rect x="170" y="450" width="460" height="52" rx="26" fill="#1F2937"/>
+</svg>

@@ -1,0 +1,19 @@
+<svg width="800" height="960" viewBox="0 0 800 960" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="960" rx="48" fill="#FFF1E6"/>
+  <circle cx="585" cy="160" r="118" fill="#FED7AA"/>
+  <circle cx="180" cy="784" r="156" fill="#FDBA74"/>
+  <rect x="116" y="180" width="568" height="640" rx="48" fill="#1F2937"/>
+  <rect x="162" y="236" width="476" height="528" rx="36" fill="#FB923C"/>
+  <circle cx="400" cy="378" r="112" fill="#FFE7CC"/>
+  <path d="M296 371C296 309.144 346.144 259 408 259H421C482.856 259 533 309.144 533 371V417H296V371Z" fill="#1F2937"/>
+  <path d="M284 746C284 651.964 360.214 575.75 454.25 575.75H465.75C559.786 575.75 636 651.964 636 746V764H284V746Z" fill="#FFE7CC"/>
+  <path d="M168 655C168 577.68 230.68 515 308 515H494C571.32 515 634 577.68 634 655V764H168V655Z" fill="#F97316"/>
+  <rect x="228" y="624" width="352" height="84" rx="24" fill="#7C2D12"/>
+  <rect x="254" y="648" width="300" height="18" rx="9" fill="#FFF1E6"/>
+  <text x="400" y="874" text-anchor="middle" fill="#9A3412" font-family="Segoe UI, Arial, sans-serif" font-size="42" font-weight="800" letter-spacing="6">
+    CHILLINGTON
+  </text>
+  <text x="400" y="916" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="10">
+    FOUNDER CUT
+  </text>
+</svg>

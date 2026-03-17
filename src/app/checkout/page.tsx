@@ -158,17 +158,17 @@ export default function CheckoutPage() {
           <div className="bg-gray-50 p-6 rounded-2xl sticky top-24">
             <h2 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h2>
             <div className="space-y-4 mb-6 max-h-96 overflow-y-auto pr-2">
-              {items.map(item => (
+              {items.map((item: any) => (
                 <div key={item.id} className="flex justify-between text-sm border-b border-gray-200 pb-4">
                   <div className="flex-1 pr-4">
                     <p className="font-semibold text-gray-900">{item.quantity}x {item.product.name}</p>
                     <p className="text-gray-500 text-xs">Size: {item.size}</p>
                     {item.extras.length > 0 && (
-                      <p className="text-gray-500 text-xs">Extras: {item.extras.map(e => e.name).join(', ')}</p>
+                      <p className="text-gray-500 text-xs">Extras: {item.extras.map((e: any) => e.name).join(', ')}</p>
                     )}
                   </div>
                   <p className="font-medium text-gray-900 whitespace-nowrap">
-                    ₦{((item.price + item.extras.reduce((s,e) => s+Number(e.price), 0)) * item.quantity).toLocaleString()}
+                    ₦{((item.price + item.extras.reduce((s: number,e: any) => s+Number(e.price), 0)) * item.quantity).toLocaleString()}
                   </p>
                 </div>
               ))}
