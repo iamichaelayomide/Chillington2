@@ -39,25 +39,6 @@ type CartItem = {
   quantity: number;
 };
 
-type DealStatus = "ongoing" | "coming-soon" | "sold-out" | "expired";
-
-type Deal = {
-  slug: string;
-  title: string;
-  status: DealStatus;
-  startsAt: string;
-  endsAt?: string;
-  heroImage: string;
-  productName: string;
-  size: MenuSize;
-  originalPrice: number;
-  dealPrice: number;
-  maxQuantity: number;
-  badge: string;
-  teaser: string;
-  description: string;
-};
-
 type Testimonial = {
   id: string;
   name: string;
@@ -147,186 +128,11 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-const deals: Deal[] = [
-  {
-    slug: "jumbo-chicken-rush",
-    title: "Jumbo Chicken Rush",
-    status: "ongoing",
-    startsAt: "2026-03-12T09:00:00.000Z",
-    endsAt: "2026-03-28T22:00:00.000Z",
-    heroImage: "/images/food/platter.jpg",
-    productName: "Chicken Shawarma",
-    size: "jumbo",
-    originalPrice: 3900,
-    dealPrice: 3200,
-    maxQuantity: 3,
-    badge: "Ongoing Deal",
-    teaser: "Save big on the most ordered jumbo wrap in Akure.",
-    description:
-      "Claim the Jumbo Chicken Rush and lock in a lower jumbo price. The wrap stays fixed at Jumbo size so the value is clean, the order is fast, and the customer sees exactly what they are getting.",
-  },
-  {
-    slug: "suya-special-week",
-    title: "Suya Special Week",
-    status: "ongoing",
-    startsAt: "2026-03-15T09:00:00.000Z",
-    endsAt: "2026-03-21T22:00:00.000Z",
-    heroImage: "/images/food/wrap.jpg",
-    productName: "Suya Shawarma",
-    size: "special",
-    originalPrice: 3800,
-    dealPrice: 3200,
-    maxQuantity: 3,
-    badge: "Ongoing Deal",
-    teaser: "Pepper-forward deal for people who want heat without paying full special price.",
-    description:
-      "Suya Special Week drops the Special size to a sharper price. It is claimable now, quantity-limited, and designed to move people straight into ordering without extra decision fatigue.",
-  },
-  {
-    slug: "combo-night-drop",
-    title: "Combo Night Drop",
-    status: "coming-soon",
-    startsAt: "2026-03-20T17:00:00.000Z",
-    heroImage: "/images/food/closeup.jpg",
-    productName: "Shawarma Combo Box",
-    size: "regular",
-    originalPrice: 5200,
-    dealPrice: 4600,
-    maxQuantity: 3,
-    badge: "Coming Soon",
-    teaser: "A tighter combo price for evening orders starting in June 2026.",
-    description:
-      "This upcoming combo deal goes live soon. The offer is fixed, capped, and visible exactly as it will be ordered so customers cannot alter the deal contents.",
-  },
-  {
-    slug: "turkey-weekend-fire",
-    title: "Turkey Weekend Fire",
-    status: "coming-soon",
-    startsAt: "2026-03-27T12:00:00.000Z",
-    heroImage: "/images/food/platter.jpg",
-    productName: "Turkey Shawarma",
-    size: "special",
-    originalPrice: 4200,
-    dealPrice: 3600,
-    maxQuantity: 3,
-    badge: "Coming Soon",
-    teaser: "Weekend-only turkey special running from July 2026.",
-    description:
-      "Turkey Weekend Fire is a scheduled offer with a locked special-size build. Customers can preview it now, but ordering only opens once it becomes active.",
-  },
-  {
-    slug: "beef-lunch-sprint",
-    title: "Beef Lunch Sprint",
-    status: "sold-out",
-    startsAt: "2026-03-16T11:00:00.000Z",
-    endsAt: "2026-03-18T16:00:00.000Z",
-    heroImage: "/images/food/closeup.jpg",
-    productName: "Beef Shawarma",
-    size: "special",
-    originalPrice: 3200,
-    dealPrice: 2700,
-    maxQuantity: 2,
-    badge: "Sold Out",
-    teaser: "Lunch crowd cleared this one early. Keep it visible so customers know what just moved.",
-    description:
-      "Beef Lunch Sprint reached its allocation before the timer closed. Customers can still inspect the locked details, but checkout is disabled until the next drop.",
-  },
-  {
-    slug: "mini-wrap-flash",
-    title: "Mini Wrap Flash",
-    status: "expired",
-    startsAt: "2026-03-01T10:00:00.000Z",
-    endsAt: "2026-03-05T20:00:00.000Z",
-    heroImage: "/images/food/wrap.jpg",
-    productName: "Mini Shawarma",
-    size: "regular",
-    originalPrice: 1750,
-    dealPrice: 1400,
-    maxQuantity: 3,
-    badge: "Expired",
-    teaser: "Previous flash promo now closed, kept here to show the kind of drops customers can expect.",
-    description:
-      "Mini Wrap Flash has ended. It remains visible as a past promotion so visitors can see the cadence and style of previous Chillington drops.",
-  },
-];
 
 function formatCurrency(value: number) {
   return `N${value.toLocaleString("en-NG")}`;
 }
 
-function formatDealDate(value: string) {
-  return new Intl.DateTimeFormat("en-NG", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  }).format(new Date(value));
-}
-
-function formatDealDateTime(value: string) {
-  return new Intl.DateTimeFormat("en-NG", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(new Date(value));
-}
-
-function dealSavings(deal: Deal) {
-  return Math.max(0, deal.originalPrice - deal.dealPrice);
-}
-
-function getDealWindowLabel(deal: Deal) {
-  if (deal.status === "ongoing" && deal.endsAt) {
-    return `Ends ${formatDealDate(deal.endsAt)}`;
-  }
-
-  if (deal.status === "coming-soon") {
-    return `Starts ${formatDealDate(deal.startsAt)}`;
-  }
-
-  if (deal.status === "sold-out") {
-    return "Allocation finished";
-  }
-
-  return "Offer closed";
-}
-
-function getDealStatusTone(status: DealStatus) {
-  if (status === "ongoing") {
-    return {
-      badge: "bg-orange-500 text-white",
-      chip: "bg-green-100 text-green-700",
-      card: "border-orange-100 bg-white",
-      panel: "bg-orange-50",
-    };
-  }
-
-  if (status === "coming-soon") {
-    return {
-      badge: "bg-slate-950/85 text-white",
-      chip: "bg-slate-100 text-slate-700",
-      card: "border-slate-200 bg-white",
-      panel: "bg-slate-50",
-    };
-  }
-
-  if (status === "sold-out") {
-    return {
-      badge: "bg-amber-500 text-white",
-      chip: "bg-amber-100 text-amber-800",
-      card: "border-amber-200 bg-[#fffaf1]",
-      panel: "bg-amber-50",
-    };
-  }
-
-  return {
-    badge: "bg-neutral-800 text-white",
-    chip: "bg-neutral-200 text-neutral-700",
-    card: "border-neutral-200 bg-[#f8f6f3]",
-    panel: "bg-neutral-100",
-  };
-}
 
 function lineId(itemId: string, size: MenuSize) {
   return `${itemId}:${size}`;
@@ -342,12 +148,6 @@ export function ChillingtonShowcase() {
   const [cartOpen, setCartOpen] = useState(false);
   const [selectedSizes, setSelectedSizes] = useState<Record<string, MenuSize>>({});
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [selectedDeal, setSelectedDeal] = useState<Deal | null>(null);
-  const [dealCheckout, setDealCheckout] = useState<Deal | null>(null);
-  const [dealQuantity, setDealQuantity] = useState(1);
-  const [customerName, setCustomerName] = useState("");
-  const [customerPhone, setCustomerPhone] = useState("");
-  const [customerAddress, setCustomerAddress] = useState("");
 
   const allItems = useMemo(() => [...premiumTreats, ...comboTreats, ...classicTreats], []);
 
@@ -371,9 +171,6 @@ export function ChillingtonShowcase() {
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartTotal = cart.reduce((sum, item) => sum + item.quantity * item.price, 0);
-  const ongoingDeals = deals.filter((deal) => deal.status === "ongoing");
-  const upcomingDeals = deals.filter((deal) => deal.status === "coming-soon");
-  const pausedDeals = deals.filter((deal) => deal.status === "sold-out" || deal.status === "expired");
 
   function getSelectedSize(item: MenuItem) {
     return selectedSizes[item.id] ?? firstSize(item);
@@ -418,45 +215,9 @@ export function ChillingtonShowcase() {
     });
   }
 
-  function openDealCheckout(deal: Deal) {
-    setSelectedDeal(null);
-    setDealCheckout(deal);
-    setDealQuantity(1);
-    setCustomerName("");
-    setCustomerPhone("");
-    setCustomerAddress("");
-  }
-
-  function submitDealOrder() {
-    if (!dealCheckout) {
-      return;
-    }
-
-    if (!customerName.trim() || !customerPhone.trim() || !customerAddress.trim()) {
-      return;
-    }
-
-    const total = dealCheckout.dealPrice * dealQuantity;
-    const message = [
-      `Hello, I want to claim this deal: ${dealCheckout.title}`,
-      "",
-      `Product: ${dealCheckout.productName}`,
-      `Deal size: ${sizeLabels[dealCheckout.size]}`,
-      `Locked deal price: ${formatCurrency(dealCheckout.dealPrice)}`,
-      `Quantity: ${dealQuantity}`,
-      `Total: ${formatCurrency(total)}`,
-      "",
-      `Name: ${customerName}`,
-      `Phone: ${customerPhone}`,
-      `Address: ${customerAddress}`,
-    ].join("\n");
-
-    window.open(`https://wa.me/2347041249727?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
-  }
-
   return (
-    <main className="min-h-screen bg-[#faf8f5] text-neutral-900">
-      <header className="sticky top-0 z-40 border-b border-orange-100 bg-[#faf8f5]/95 backdrop-blur">
+    <main className="min-h-screen bg-[#edf2f7] text-neutral-900">
+      <header className="sticky top-0 z-40 border-b border-slate-200 bg-[#edf2f7]/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-orange-500 text-white shadow-lg shadow-orange-200">
@@ -469,7 +230,7 @@ export function ChillingtonShowcase() {
           </div>
 
           <div className="hidden items-center gap-8 text-xs font-bold uppercase tracking-[0.22em] text-neutral-500 md:flex">
-            <a href="#deals" className="transition hover:text-orange-500">Deals</a>
+            <a href="/deals" className="transition hover:text-orange-500">Deals</a>
             <a href="#about" className="transition hover:text-orange-500">About</a>
             <a href="#footer" className="transition hover:text-orange-500">Contact</a>
           </div>
@@ -490,7 +251,7 @@ export function ChillingtonShowcase() {
 
       <section className="px-4 pb-10 pt-8 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[1fr_1.05fr]">
-          <div className="rounded-[2rem] border border-orange-100 bg-white p-6 shadow-sm sm:p-8">
+          <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
             <span className="inline-flex items-center gap-2 rounded-full bg-orange-500 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-white">
               <Sparkles className="h-3.5 w-3.5" />
               Akure's shawarma spot
@@ -514,258 +275,49 @@ export function ChillingtonShowcase() {
                 href="https://wa.me/2347041249727"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-[1.35rem] border border-orange-200 bg-orange-50 px-6 py-4 text-base font-semibold text-orange-700 transition hover:border-orange-300 hover:bg-orange-100"
+                className="rounded-[1.35rem] border border-slate-300 bg-white px-6 py-4 text-base font-semibold text-slate-800 transition hover:border-orange-300 hover:text-orange-600"
               >
                 Contact us
               </a>
             </div>
 
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
-              <div className="rounded-[1.4rem] bg-orange-50 p-4">
+              <div className="rounded-[1.4rem] bg-slate-100 p-4">
                 <p className="text-2xl font-black text-slate-950">7+</p>
                 <p className="mt-1 text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Proteins</p>
               </div>
-              <div className="rounded-[1.4rem] bg-orange-50 p-4">
+              <div className="rounded-[1.4rem] bg-slate-100 p-4">
                 <p className="text-2xl font-black text-slate-950">6</p>
                 <p className="mt-1 text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Combo builds</p>
               </div>
-              <div className="rounded-[1.4rem] bg-orange-50 p-4">
+              <div className="rounded-[1.4rem] bg-slate-100 p-4">
                 <p className="text-2xl font-black text-slate-950">100%</p>
                 <p className="mt-1 text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Local assets</p>
               </div>
             </div>
-          </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="relative min-h-[520px] overflow-hidden rounded-[2rem] border border-orange-200 bg-slate-950">
-              <Image src="/images/food/platter.jpg" alt="Large platter of shawarma, fries and dips" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" priority />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <div className="rounded-[1.6rem] border border-white/10 bg-black/35 p-5 backdrop-blur">
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-300">Signature Stack</p>
-                  <h2 className="mt-3 text-3xl font-black text-white">Chicken jumbo with extra cream.</h2>
-                  <p className="mt-3 text-sm leading-6 text-orange-50/90">Big wrap, loaded filling, fast decision path.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid gap-4">
-              <div className="overflow-hidden rounded-[2rem] border border-orange-200 bg-[#fff4eb]">
-                <Image src="/images/food/closeup.jpg" alt="Close-up shawarma with visible filling" width={800} height={960} className="h-full w-full object-cover" />
-              </div>
-              <div className="overflow-hidden rounded-[2rem] border border-orange-200 bg-[#fff4eb]">
-                <Image src="/images/food/wrap.jpg" alt="Freshly wrapped shawarma ready to eat" width={800} height={960} className="h-full w-full object-cover" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="deals" className="px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl space-y-8">
-          <div className="space-y-3">
-            <p className="text-xs font-bold uppercase tracking-[0.24em] text-orange-600">Best Deals</p>
-            <h2 className="text-3xl font-black text-slate-950 sm:text-4xl">Ongoing and upcoming offers, locked and ready</h2>
-            <p className="max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
-              These deals are read-only. Customers can inspect the exact offer, then proceed with the fixed deal order without changing the size, price, or structure.
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            <div className="flex items-center justify-between gap-4">
-              <h3 className="text-lg font-black uppercase tracking-[0.18em] text-slate-900">Ongoing Deals</h3>
-              <span className="rounded-full bg-green-100 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-green-700">
-                Live now
+            <div className="mt-6 flex flex-wrap items-center gap-3 rounded-[1.5rem] border border-slate-200 bg-slate-50 px-4 py-4">
+              <span className="rounded-full bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-orange-700">
+                Fast delivery
+              </span>
+              <span className="rounded-full bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-orange-700">
+                Freshly made
+              </span>
+              <span className="rounded-full bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-orange-700">
+                Akure orders daily
               </span>
             </div>
-            <div className="grid gap-5 lg:grid-cols-2">
-              {ongoingDeals.map((deal) => (
-                <article key={deal.slug} className={`overflow-hidden rounded-[2rem] border shadow-sm ${getDealStatusTone(deal.status).card}`}>
-                  <div className="relative h-64">
-                    <Image src={deal.heroImage} alt={deal.title} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
-                    <div className="absolute left-5 right-5 top-5 flex items-center justify-between gap-3">
-                      <span className={`rounded-full px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] ${getDealStatusTone(deal.status).badge}`}>{deal.badge}</span>
-                      <div className="flex flex-wrap justify-end gap-2">
-                        <span className="rounded-full bg-white/90 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-900">
-                          Save {formatCurrency(dealSavings(deal))}
-                        </span>
-                        <span className="rounded-full bg-white/90 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-900">
-                          Max {deal.maxQuantity}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
-                      <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-300">{deal.productName}</p>
-                      <h4 className="mt-2 text-3xl font-black">{deal.title}</h4>
-                    </div>
-                  </div>
-                  <div className="space-y-5 p-5">
-                    <p className="text-sm leading-7 text-slate-600">{deal.teaser}</p>
-                    <div className="flex flex-wrap gap-2">
-                      <span className={`rounded-full px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] ${getDealStatusTone(deal.status).chip}`}>
-                        {getDealWindowLabel(deal)}
-                      </span>
-                      <span className="rounded-full bg-slate-100 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-700">
-                        {formatDealDateTime(deal.startsAt)}
-                      </span>
-                    </div>
-                    <div className={`flex items-center justify-between rounded-[1.3rem] px-4 py-4 ${getDealStatusTone(deal.status).panel}`}>
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Deal price</p>
-                        <div className="mt-1 flex items-center gap-3">
-                          <span className="text-2xl font-black text-slate-950">{formatCurrency(deal.dealPrice)}</span>
-                          <span className="text-sm font-semibold text-slate-400 line-through">{formatCurrency(deal.originalPrice)}</span>
-                        </div>
-                      </div>
-                      <span className="rounded-full bg-white px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-orange-700">
-                        {sizeLabels[deal.size]}
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-3">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedDeal(deal)}
-                        className="rounded-[1.2rem] border border-orange-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-orange-300 hover:text-orange-600"
-                      >
-                        View deal
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => openDealCheckout(deal)}
-                        className="rounded-[1.2rem] bg-orange-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-orange-600"
-                      >
-                        Proceed with order
-                      </button>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="flex items-center justify-between gap-4">
-              <h3 className="text-lg font-black uppercase tracking-[0.18em] text-slate-900">Upcoming Deals</h3>
-              <span className="rounded-full bg-slate-100 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-700">
-                Preview only
-              </span>
-            </div>
-            <div className="grid gap-5 lg:grid-cols-2">
-              {upcomingDeals.map((deal) => (
-                <article key={deal.slug} className={`overflow-hidden rounded-[2rem] border shadow-sm ${getDealStatusTone(deal.status).card}`}>
-                  <div className="relative h-52">
-                    <Image src={deal.heroImage} alt={deal.title} fill className="object-cover grayscale-[0.1]" sizes="(max-width: 1024px) 100vw, 50vw" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/25 to-transparent" />
-                    <div className="absolute left-5 top-5">
-                      <span className={`rounded-full px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] ${getDealStatusTone(deal.status).badge}`}>{deal.badge}</span>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
-                      <h4 className="text-2xl font-black">{deal.title}</h4>
-                    </div>
-                  </div>
-                  <div className="space-y-4 p-5">
-                    <p className="text-sm leading-7 text-slate-600">{deal.teaser}</p>
-                    <div className="flex flex-wrap gap-2">
-                      <span className={`rounded-full px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] ${getDealStatusTone(deal.status).chip}`}>
-                        {getDealWindowLabel(deal)}
-                      </span>
-                      <span className="rounded-full bg-orange-100 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-orange-700">
-                        Save {formatCurrency(dealSavings(deal))}
-                      </span>
-                    </div>
-                    <div className={`flex items-center justify-between rounded-[1.3rem] px-4 py-4 ${getDealStatusTone(deal.status).panel}`}>
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Expected deal price</p>
-                        <div className="mt-1 flex items-center gap-3">
-                          <span className="text-2xl font-black text-slate-950">{formatCurrency(deal.dealPrice)}</span>
-                          <span className="text-sm font-semibold text-slate-400 line-through">{formatCurrency(deal.originalPrice)}</span>
-                        </div>
-                      </div>
-                      <span className="rounded-full bg-white px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-slate-700">
-                        {sizeLabels[deal.size]}
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-3">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedDeal(deal)}
-                        className="rounded-[1.2rem] border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-orange-300 hover:text-orange-600"
-                      >
-                        View deal
-                      </button>
-                      <span className="rounded-[1.2rem] bg-slate-100 px-5 py-3 text-sm font-semibold text-slate-500">
-                        Not orderable yet
-                      </span>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <div className="flex items-center justify-between gap-4">
-              <h3 className="text-lg font-black uppercase tracking-[0.18em] text-slate-900">Paused Deals</h3>
-              <span className="rounded-full bg-amber-100 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-amber-800">
-                Sold out or expired
-              </span>
-            </div>
-            <div className="grid gap-5 lg:grid-cols-2">
-              {pausedDeals.map((deal) => (
-                <article key={deal.slug} className={`overflow-hidden rounded-[2rem] border shadow-sm ${getDealStatusTone(deal.status).card}`}>
-                  <div className="relative h-52">
-                    <Image src={deal.heroImage} alt={deal.title} fill className="object-cover grayscale-[0.2]" sizes="(max-width: 1024px) 100vw, 50vw" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent" />
-                    <div className="absolute left-5 right-5 top-5 flex items-center justify-between gap-3">
-                      <span className={`rounded-full px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] ${getDealStatusTone(deal.status).badge}`}>{deal.badge}</span>
-                      <span className="rounded-full bg-white/90 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-900">
-                        Save {formatCurrency(dealSavings(deal))}
-                      </span>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
-                      <h4 className="text-2xl font-black">{deal.title}</h4>
-                    </div>
-                  </div>
-                  <div className="space-y-4 p-5">
-                    <p className="text-sm leading-7 text-slate-600">{deal.teaser}</p>
-                    <div className="flex flex-wrap gap-2">
-                      <span className={`rounded-full px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] ${getDealStatusTone(deal.status).chip}`}>
-                        {getDealWindowLabel(deal)}
-                      </span>
-                      {deal.endsAt ? (
-                        <span className="rounded-full bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-700">
-                          Ended {formatDealDate(deal.endsAt)}
-                        </span>
-                      ) : null}
-                    </div>
-                    <div className={`flex items-center justify-between rounded-[1.3rem] px-4 py-4 ${getDealStatusTone(deal.status).panel}`}>
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Deal price</p>
-                        <div className="mt-1 flex items-center gap-3">
-                          <span className="text-2xl font-black text-slate-950">{formatCurrency(deal.dealPrice)}</span>
-                          <span className="text-sm font-semibold text-slate-400 line-through">{formatCurrency(deal.originalPrice)}</span>
-                        </div>
-                      </div>
-                      <span className="rounded-full bg-white px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-slate-700">
-                        {sizeLabels[deal.size]}
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-3">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedDeal(deal)}
-                        className="rounded-[1.2rem] border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-orange-300 hover:text-orange-600"
-                      >
-                        View deal
-                      </button>
-                      <span className="rounded-[1.2rem] bg-slate-100 px-5 py-3 text-sm font-semibold text-slate-500">
-                        Checkout disabled
-                      </span>
-                    </div>
-                  </div>
-                </article>
-              ))}
+          <div className="relative min-h-[520px] overflow-hidden rounded-[2rem] border border-slate-200 bg-slate-950">
+            <Image src="/images/food/platter.jpg" alt="Large platter of shawarma, fries and dips" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" priority />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
+              <div className="max-w-md rounded-[1.6rem] border border-white/10 bg-black/35 p-5 backdrop-blur">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-300">Signature Stack</p>
+                <h2 className="mt-3 text-3xl font-black text-white">Chicken jumbo with extra cream.</h2>
+                <p className="mt-3 text-sm leading-6 text-orange-50/90">Big wrap, loaded filling, proper heat, and the kind of finish that keeps people ordering again.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -1055,242 +607,6 @@ export function ChillingtonShowcase() {
           <span>{cartCount}</span>
           <span>{formatCurrency(cartTotal)}</span>
         </button>
-      ) : null}
-
-      {selectedDeal ? (
-        <div className="fixed inset-0 z-[60]">
-          <button type="button" aria-label="Close deal details" onClick={() => setSelectedDeal(null)} className="absolute inset-0 bg-slate-950/60" />
-          <div className="absolute left-1/2 top-1/2 w-[min(92vw,760px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2rem] bg-white shadow-2xl">
-            <div className="relative h-72">
-              <Image src={selectedDeal.heroImage} alt={selectedDeal.title} fill className="object-cover" sizes="760px" />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
-              <button
-                type="button"
-                onClick={() => setSelectedDeal(null)}
-                className="absolute right-5 top-5 rounded-full bg-white/90 p-2 text-slate-700 transition hover:bg-white"
-              >
-                <X className="h-5 w-5" />
-              </button>
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-300">{selectedDeal.badge}</p>
-                <h3 className="mt-2 text-3xl font-black">{selectedDeal.title}</h3>
-                <p className="mt-2 text-sm font-semibold uppercase tracking-[0.16em] text-orange-100">
-                  {selectedDeal.productName} · {sizeLabels[selectedDeal.size]}
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-5 p-6">
-              <div className="flex flex-wrap gap-2">
-                <span className={`rounded-full px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] ${getDealStatusTone(selectedDeal.status).chip}`}>
-                  {getDealWindowLabel(selectedDeal)}
-                </span>
-                <span className="rounded-full bg-slate-100 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-700">
-                  Save {formatCurrency(dealSavings(selectedDeal))}
-                </span>
-                <span className="rounded-full bg-slate-100 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-700">
-                  Starts {formatDealDateTime(selectedDeal.startsAt)}
-                </span>
-                {selectedDeal.endsAt ? (
-                  <span className="rounded-full bg-slate-100 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-700">
-                    Ends {formatDealDateTime(selectedDeal.endsAt)}
-                  </span>
-                ) : null}
-              </div>
-
-              <div className="rounded-[1.4rem] border border-orange-100 bg-orange-50 p-5">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Locked deal details</p>
-                <div className="mt-3 grid gap-4 sm:grid-cols-4">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Deal size</p>
-                    <p className="mt-1 text-lg font-black text-slate-950">{sizeLabels[selectedDeal.size]}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Original</p>
-                    <p className="mt-1 text-lg font-black text-slate-400 line-through">{formatCurrency(selectedDeal.originalPrice)}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Deal price</p>
-                    <p className="mt-1 text-lg font-black text-orange-600">{formatCurrency(selectedDeal.dealPrice)}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">You save</p>
-                    <p className="mt-1 text-lg font-black text-slate-950">{formatCurrency(dealSavings(selectedDeal))}</p>
-                  </div>
-                </div>
-              </div>
-
-              <p className="text-sm leading-7 text-slate-600">{selectedDeal.description}</p>
-
-              <div className="rounded-[1.4rem] border border-slate-200 bg-slate-50 p-5">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Important</p>
-                <p className="mt-2 text-sm leading-7 text-slate-600">
-                  Customers cannot edit this deal. The product, size, and price are fixed. The only adjustable part during checkout is quantity, up to {selectedDeal.maxQuantity}.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-3">
-                {selectedDeal.status === "ongoing" ? (
-                  <button
-                    type="button"
-                    onClick={() => openDealCheckout(selectedDeal)}
-                    className="rounded-[1.2rem] bg-orange-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-orange-600"
-                  >
-                    Proceed with order
-                  </button>
-                ) : selectedDeal.status === "coming-soon" ? (
-                  <span className="rounded-[1.2rem] bg-slate-100 px-5 py-3 text-sm font-semibold text-slate-500">Deal not active yet</span>
-                ) : selectedDeal.status === "sold-out" ? (
-                  <span className="rounded-[1.2rem] bg-amber-100 px-5 py-3 text-sm font-semibold text-amber-800">Deal sold out</span>
-                ) : (
-                  <span className="rounded-[1.2rem] bg-neutral-100 px-5 py-3 text-sm font-semibold text-neutral-600">Deal expired</span>
-                )}
-                <button
-                  type="button"
-                  onClick={() => setSelectedDeal(null)}
-                  className="rounded-[1.2rem] border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-orange-300 hover:text-orange-600"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : null}
-
-      {dealCheckout ? (
-        <div className="fixed inset-0 z-[70]">
-          <button type="button" aria-label="Close deal checkout" onClick={() => setDealCheckout(null)} className="absolute inset-0 bg-slate-950/60" />
-          <div className="absolute left-1/2 top-1/2 w-[min(92vw,720px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2rem] bg-white shadow-2xl">
-            <div className="border-b border-orange-100 px-6 py-5">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-600">Deal Checkout</p>
-                  <h3 className="mt-2 text-2xl font-black text-slate-950">{dealCheckout.title}</h3>
-                  <p className="mt-2 text-sm text-slate-600">
-                    Fixed offer: {dealCheckout.productName} · {sizeLabels[dealCheckout.size]}
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setDealCheckout(null)}
-                  className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:border-orange-300 hover:text-orange-600"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-
-            <div className="grid gap-6 p-6 lg:grid-cols-[0.92fr_1.08fr]">
-              <div className="space-y-4">
-                <div className="relative h-64 overflow-hidden rounded-[1.5rem]">
-                  <Image src={dealCheckout.heroImage} alt={dealCheckout.title} fill className="object-cover" sizes="320px" />
-                </div>
-                <div className="rounded-[1.5rem] border border-orange-100 bg-orange-50 p-5">
-                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Order details</p>
-                  <div className="mt-4 space-y-3 text-sm text-slate-700">
-                    <div className="flex items-center justify-between">
-                      <span>Product</span>
-                      <span className="font-semibold">{dealCheckout.productName}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>Size</span>
-                      <span className="font-semibold">{sizeLabels[dealCheckout.size]}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>Deal price</span>
-                      <span className="font-semibold text-orange-600">{formatCurrency(dealCheckout.dealPrice)}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>Original price</span>
-                      <span className="font-semibold line-through text-slate-400">{formatCurrency(dealCheckout.originalPrice)}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>You save</span>
-                      <span className="font-semibold text-slate-950">{formatCurrency(dealSavings(dealCheckout))}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="deal-quantity" className="mb-2 block text-sm font-semibold text-slate-700">Quantity</label>
-                  <div className="flex items-center justify-between rounded-[1.3rem] border border-orange-200 bg-white px-4 py-3">
-                    <button
-                      type="button"
-                      onClick={() => setDealQuantity((current) => Math.max(1, current - 1))}
-                      className="rounded-full bg-orange-50 p-2 text-orange-600 transition hover:bg-orange-100"
-                    >
-                      <Minus className="h-4 w-4" />
-                    </button>
-                    <div className="text-center">
-                      <p id="deal-quantity" className="text-2xl font-black text-slate-950">{dealQuantity}</p>
-                      <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Max {dealCheckout.maxQuantity}</p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setDealQuantity((current) => Math.min(dealCheckout.maxQuantity, current + 1))}
-                      className="rounded-full bg-orange-50 p-2 text-orange-600 transition hover:bg-orange-100"
-                    >
-                      <Plus className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="deal-name" className="mb-2 block text-sm font-semibold text-slate-700">Name</label>
-                  <input
-                    id="deal-name"
-                    value={customerName}
-                    onChange={(event) => setCustomerName(event.target.value)}
-                    placeholder="Your full name"
-                    className="w-full rounded-[1.3rem] border border-orange-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-400"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="deal-phone" className="mb-2 block text-sm font-semibold text-slate-700">Phone</label>
-                  <input
-                    id="deal-phone"
-                    value={customerPhone}
-                    onChange={(event) => setCustomerPhone(event.target.value)}
-                    placeholder="0803 123 4567"
-                    className="w-full rounded-[1.3rem] border border-orange-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-400"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="deal-address" className="mb-2 block text-sm font-semibold text-slate-700">Address</label>
-                  <textarea
-                    id="deal-address"
-                    value={customerAddress}
-                    onChange={(event) => setCustomerAddress(event.target.value)}
-                    placeholder="House number, street, area"
-                    rows={4}
-                    className="w-full rounded-[1.3rem] border border-orange-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-400"
-                  />
-                </div>
-
-                <div className="rounded-[1.4rem] bg-slate-950 px-5 py-4 text-white">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-300">Total</p>
-                    <p className="text-3xl font-black">{formatCurrency(dealCheckout.dealPrice * dealQuantity)}</p>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={submitDealOrder}
-                  disabled={!customerName.trim() || !customerPhone.trim() || !customerAddress.trim()}
-                  className="w-full rounded-[1.3rem] bg-orange-500 px-5 py-4 text-sm font-semibold text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  Proceed with order
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
       ) : null}
 
       {cartOpen ? (

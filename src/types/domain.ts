@@ -47,7 +47,7 @@ export type Promotion = {
   is_active: boolean;
 };
 
-export type DealStatus = "ongoing" | "coming-soon";
+export type DealStatus = "ongoing" | "coming-soon" | "sold-out" | "expired";
 
 export type Deal = {
   slug: string;
