@@ -188,24 +188,29 @@ export function ChillingtonShowcase() {
       return;
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    const updateActiveSection = () => {
+      const marker = window.scrollY + 180;
+      let current = sections[0]?.id ?? "premium";
 
-        if (visible?.target?.id) {
-          setActiveMenuSection(visible.target.id);
+      for (const section of sections) {
+        if (section.offsetTop <= marker) {
+          current = section.id;
+        } else {
+          break;
         }
-      },
-      {
-        rootMargin: "-20% 0px -60% 0px",
-        threshold: [0.2, 0.45, 0.7],
-      },
-    );
+      }
 
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+      setActiveMenuSection(current);
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("resize", updateActiveSection);
+
+    return () => {
+      window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("resize", updateActiveSection);
+    };
   }, [filteredSections.length]);
 
   function getSelectedSize(item: MenuItem) {
