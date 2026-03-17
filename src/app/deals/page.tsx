@@ -33,8 +33,8 @@ export default function DealsPage() {
 
           <div className="hidden items-center gap-8 text-xs font-bold uppercase tracking-[0.22em] text-neutral-500 md:flex">
             <Link href="/deals" className="border-b-2 border-orange-500 pb-1 text-orange-600">Deals</Link>
-            <Link href="/#about" className="transition hover:text-orange-500">About</Link>
-            <Link href="/#footer" className="transition hover:text-orange-500">Contact</Link>
+            <Link href="/#about" className="border-b-2 border-transparent pb-1 transition hover:border-orange-300 hover:text-orange-500">About</Link>
+            <Link href="/#footer" className="border-b-2 border-transparent pb-1 transition hover:border-orange-300 hover:text-orange-500">Contact</Link>
           </div>
 
           <a

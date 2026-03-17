@@ -271,9 +271,9 @@ export function ChillingtonShowcase() {
           </div>
 
           <div className="hidden items-center gap-8 text-xs font-bold uppercase tracking-[0.22em] text-neutral-500 md:flex">
-            <a href="/deals" className="transition hover:text-orange-500">Deals</a>
-            <a href="#about" className="transition hover:text-orange-500">About</a>
-            <a href="#footer" className="transition hover:text-orange-500">Contact</a>
+            <a href="/deals" className="border-b-2 border-transparent pb-1 transition hover:border-orange-300 hover:text-orange-500">Deals</a>
+            <a href="#about" className="border-b-2 border-transparent pb-1 transition hover:border-orange-300 hover:text-orange-500">About</a>
+            <a href="#footer" className="border-b-2 border-transparent pb-1 transition hover:border-orange-300 hover:text-orange-500">Contact</a>
           </div>
 
           <button
@@ -580,8 +580,14 @@ export function ChillingtonShowcase() {
 
       <section id="about" className="bg-slate-950 px-4 py-20 text-white sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-          <div className="overflow-hidden rounded-[2rem] bg-[#1e293b]">
-            <Image src="/images/food/platter.jpg" alt="Shawarma platter with fries" width={1000} height={1180} className="h-full w-full object-cover" />
+          <div className="relative min-h-[360px] overflow-hidden rounded-[2rem] bg-[#1e293b] sm:min-h-[440px] lg:min-h-[520px]">
+            <Image
+              src="/images/food/platter.jpg"
+              alt="Shawarma platter with fries"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 45vw"
+            />
           </div>
 
           <div>
