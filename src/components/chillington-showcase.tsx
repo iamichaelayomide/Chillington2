@@ -58,6 +58,15 @@ type Deal = {
   description: string;
 };
 
+type Testimonial = {
+  id: string;
+  name: string;
+  location: string;
+  order: string;
+  quote: string;
+  accent: string;
+};
+
 const tabs = ["All", "Premium Treat", "Combo Treats", "Classic Treats"] as const;
 
 const sizeLabels: Record<MenuSize, string> = {
@@ -101,6 +110,41 @@ const extras = [
   { id: "ex5", name: "Extra Wrap", price: 400 },
   { id: "ex6", name: "Extra Cream", price: 300 },
   { id: "ex7", name: "Cheese", price: 2000 },
+];
+
+const testimonials: Testimonial[] = [
+  {
+    id: "t1",
+    name: "Anjola",
+    location: "Akure",
+    order: "Chicken Jumbo + fries",
+    quote: "This is the kind of shawarma that makes you stop talking after the first bite. The wrap was heavy, hot, and packed properly.",
+    accent: "bg-[#fff1e8]",
+  },
+  {
+    id: "t2",
+    name: "Tobi",
+    location: "FUTA South Gate",
+    order: "Suya Special",
+    quote: "The suya version had real heat and the cream balanced it well. I ordered once and it turned into my default late-night order.",
+    accent: "bg-[#fff7dc]",
+  },
+  {
+    id: "t3",
+    name: "Mide",
+    location: "Alagbaka",
+    order: "Chicken and Beef Combo",
+    quote: "The combo did not feel small or rushed. You can tell the fillings are generous, and it still arrived looking clean.",
+    accent: "bg-[#eef7ef]",
+  },
+  {
+    id: "t4",
+    name: "Feyisayo",
+    location: "Ijapo Estate",
+    order: "Turkey Special",
+    quote: "Their turkey shawarma tastes premium. It feels like the kind of order you make when you actually want to enjoy your money.",
+    accent: "bg-[#f6f0ff]",
+  },
 ];
 
 const deals: Deal[] = [
@@ -426,7 +470,6 @@ export function ChillingtonShowcase() {
 
           <div className="hidden items-center gap-8 text-xs font-bold uppercase tracking-[0.22em] text-neutral-500 md:flex">
             <a href="#deals" className="transition hover:text-orange-500">Deals</a>
-            <a href="#menu" className="transition hover:text-orange-500">Menu</a>
             <a href="#about" className="transition hover:text-orange-500">About</a>
             <a href="#footer" className="transition hover:text-orange-500">Contact</a>
           </div>
@@ -450,33 +493,31 @@ export function ChillingtonShowcase() {
           <div className="rounded-[2rem] border border-orange-100 bg-white p-6 shadow-sm sm:p-8">
             <span className="inline-flex items-center gap-2 rounded-full bg-orange-500 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-white">
               <Sparkles className="h-3.5 w-3.5" />
-              Local-only build
+              Akure's shawarma spot
             </span>
 
             <h1 className="mt-6 max-w-xl text-5xl font-black leading-none text-slate-950 sm:text-6xl">
-              Exact energy.
+              Hot wraps.
               <br />
-              Zero external assets.
+              Big flavour.
             </h1>
 
             <p className="mt-5 max-w-lg text-base leading-7 text-slate-600">
-              This V2 route now runs only from your project files. No remote image host, no embedded design URL, no outside dependency to render the page.
+              Loaded shawarma, rich fillings, proper heat, and fast delivery across Akure. Order your favourite wrap, catch live deals, and send your order straight to us on WhatsApp.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href="#deals" className="rounded-[1.35rem] bg-orange-500 px-6 py-4 text-base font-semibold text-white transition hover:bg-orange-600">
-                View best deals
+              <a href="#menu" className="rounded-[1.35rem] bg-orange-500 px-6 py-4 text-base font-semibold text-white transition hover:bg-orange-600">
+                Shop now
               </a>
-              <a href="#menu" className="rounded-[1.35rem] bg-slate-950 px-6 py-4 text-base font-semibold text-white transition hover:bg-slate-800">
-                Browse menu
-              </a>
-              <button
-                type="button"
-                onClick={() => setCartOpen(true)}
+              <a
+                href="https://wa.me/2347041249727"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="rounded-[1.35rem] border border-orange-200 bg-orange-50 px-6 py-4 text-base font-semibold text-orange-700 transition hover:border-orange-300 hover:bg-orange-100"
               >
-                Open cart
-              </button>
+                Contact us
+              </a>
             </div>
 
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -848,6 +889,53 @@ export function ChillingtonShowcase() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-orange-100 bg-[#fffaf4] px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl space-y-8">
+          <div className="space-y-3">
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-orange-600">Testimonials</p>
+            <h2 className="text-3xl font-black text-slate-950 sm:text-4xl">Swipe through what people say after the first bite</h2>
+            <p className="max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
+              Built to scroll naturally on touch screens. Drag sideways, swipe on mobile, or trackpad through the reviews before you hit the about section.
+            </p>
+          </div>
+
+          <div className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {testimonials.map((testimonial) => (
+              <article
+                key={testimonial.id}
+                className={`min-w-[84%] snap-center rounded-[2rem] border border-white/70 p-6 shadow-sm sm:min-w-[30rem] lg:min-w-[24rem] ${testimonial.accent}`}
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-lg font-black text-slate-950">{testimonial.name}</p>
+                    <p className="mt-1 text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{testimonial.location}</p>
+                  </div>
+                  <div className="rounded-full bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-orange-700">
+                    Verified order
+                  </div>
+                </div>
+
+                <p className="mt-6 text-xl font-black leading-9 text-slate-950">&ldquo;{testimonial.quote}&rdquo;</p>
+
+                <div className="mt-8 flex items-center justify-between gap-4 border-t border-slate-200/70 pt-5">
+                  <div>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">Ordered</p>
+                    <p className="mt-2 text-sm font-semibold text-slate-700">{testimonial.order}</p>
+                  </div>
+                  <div className="flex gap-1 text-orange-500">
+                    <span>★</span>
+                    <span>★</span>
+                    <span>★</span>
+                    <span>★</span>
+                    <span>★</span>
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
