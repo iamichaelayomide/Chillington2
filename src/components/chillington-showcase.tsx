@@ -41,6 +41,14 @@ type CartItem = {
   quantity: number;
 };
 
+type CustomerDetails = {
+  name: string;
+  email: string;
+  phone: string;
+  location: string;
+  note: string;
+};
+
 type Testimonial = {
   id: string;
   name: string;
@@ -149,6 +157,16 @@ export function ChillingtonShowcase() {
   const [selectedSizes, setSelectedSizes] = useState<Record<string, MenuSize>>({});
   const [cart, setCart] = useState<CartItem[]>([]);
   const [activeMenuSection, setActiveMenuSection] = useState("premium");
+  const [cartStep, setCartStep] = useState<"review" | "details">("review");
+  const [cartMessage, setCartMessage] = useState("");
+  const [customerDetails, setCustomerDetails] = useState<CustomerDetails>({
+    name: "",
+    email: "",
+    phone: "",
+    location: "",
+    note: "",
+  });
+  const [customerErrors, setCustomerErrors] = useState<Partial<Record<keyof CustomerDetails, string>>>({});
 
   const allItems = useMemo(() => [...premiumTreats, ...comboTreats, ...classicTreats], []);
 
@@ -229,6 +247,15 @@ export function ChillingtonShowcase() {
     };
   }, [mobileNavOpen]);
 
+  useEffect(() => {
+    if (!cartMessage) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => setCartMessage(""), 2400);
+    return () => window.clearTimeout(timeoutId);
+  }, [cartMessage]);
+
   function getSelectedSize(item: MenuItem) {
     return selectedSizes[item.id] ?? firstSize(item);
   }
@@ -253,6 +280,8 @@ export function ChillingtonShowcase() {
 
       return [...current, { id: item.id, name: item.name, image: item.image, size, price, quantity: 1 }];
     });
+
+    setCartMessage(`${item.name} added to cart`);
   }
 
   function removeFromCart(itemId: string, size: MenuSize) {
@@ -272,8 +301,76 @@ export function ChillingtonShowcase() {
     });
   }
 
+  function updateCustomerDetail(field: keyof CustomerDetails, value: string) {
+    setCustomerDetails((current) => ({ ...current, [field]: value }));
+    setCustomerErrors((current) => ({ ...current, [field]: "" }));
+  }
+
+  function validateCustomerDetails() {
+    const nextErrors: Partial<Record<keyof CustomerDetails, string>> = {};
+
+    if (customerDetails.name.trim().length < 2) {
+      nextErrors.name = "Enter a valid name.";
+    }
+
+    if (!customerDetails.email.trim() || !customerDetails.email.includes("@")) {
+      nextErrors.email = "Enter a valid email.";
+    }
+
+    if (customerDetails.phone.trim().length < 10) {
+      nextErrors.phone = "Enter a reachable phone number.";
+    }
+
+    if (customerDetails.location.trim().length < 5) {
+      nextErrors.location = "Enter your delivery location.";
+    }
+
+    setCustomerErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  }
+
+  function proceedToDetails() {
+    setCartStep("details");
+  }
+
+  function openWhatsAppOrder() {
+    if (!validateCustomerDetails()) {
+      return;
+    }
+
+    const message = [
+      "Hello, I want to order:",
+      "",
+      `Name: ${customerDetails.name}`,
+      `Email: ${customerDetails.email}`,
+      `Phone: ${customerDetails.phone}`,
+      `Location: ${customerDetails.location}`,
+      customerDetails.note ? `Note: ${customerDetails.note}` : null,
+      "",
+      "Order details:",
+      ...cart.map((item) => `- ${item.name} (${sizeLabels[item.size]}) x${item.quantity} - ${formatCurrency(item.quantity * item.price)}`),
+      "",
+      `Total: ${formatCurrency(cartTotal)}`,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    window.open(`https://wa.me/2347032891651?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+  }
+
   return (
     <main className="min-h-screen bg-[#edf2f7] text-neutral-900">
+      {cartMessage ? (
+        <div className="fixed right-4 top-20 z-[70] rounded-[1.2rem] border border-green-200 bg-white px-4 py-3 shadow-lg sm:right-6">
+          <div className="flex items-center gap-3">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 text-green-700">
+              <Check className="h-4 w-4" />
+            </span>
+            <p className="text-sm font-semibold text-slate-900">{cartMessage}</p>
+          </div>
+        </div>
+      ) : null}
+
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-[#edf2f7]/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
@@ -814,51 +911,63 @@ export function ChillingtonShowcase() {
       {cartOpen ? (
         <div className="fixed inset-0 z-50">
           <button type="button" aria-label="Close cart" onClick={() => setCartOpen(false)} className="absolute inset-0 bg-black/70" />
-          <aside className="absolute bottom-0 right-0 top-0 flex w-full max-w-md flex-col border-l border-white/10 bg-[#0f0f0f] shadow-2xl">
-            <div className="flex items-center justify-between border-b border-white/10 px-6 py-5">
+          <aside className="absolute bottom-0 right-0 top-0 flex w-full max-w-md flex-col border-l border-orange-100 bg-white shadow-2xl">
+            <div className="flex items-center justify-between border-b border-orange-100 px-6 py-5">
               <div className="flex items-center gap-3">
-                <ShoppingBag className="h-5 w-5 text-orange-300" />
+                {cartStep === "details" ? (
+                  <button
+                    type="button"
+                    onClick={() => setCartStep("review")}
+                    className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:border-orange-300 hover:text-orange-600"
+                  >
+                    <ChevronRight className="h-4 w-4 rotate-180" />
+                  </button>
+                ) : (
+                  <ShoppingBag className="h-5 w-5 text-orange-500" />
+                )}
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-300">Your order</p>
-                  <h3 className="text-lg font-black text-white">Cart</h3>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-600">Your order</p>
+                  <h3 className="text-lg font-black text-slate-950">{cartStep === "review" ? "Cart" : "Order details"}</h3>
                 </div>
               </div>
-              <button type="button" onClick={() => setCartOpen(false)} className="rounded-full border border-white/10 p-2 text-white/55 transition hover:border-orange-300/40 hover:text-orange-200">
+              <button type="button" onClick={() => setCartOpen(false)} className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:border-orange-300 hover:text-orange-600">
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {!cart.length ? (
               <div className="flex flex-1 flex-col items-center justify-center px-8 text-center">
-                <div className="rounded-full bg-white/[0.04] p-5">
-                  <ShoppingBag className="h-8 w-8 text-orange-300" />
+                <div className="rounded-full bg-orange-50 p-5">
+                  <ShoppingBag className="h-8 w-8 text-orange-500" />
                 </div>
-                <p className="mt-5 text-2xl font-black text-white">Your cart is empty</p>
-                <p className="mt-2 text-sm leading-7 text-white/55">Pick a shawarma, switch a size, then come back here to review it.</p>
+                <p className="mt-5 text-2xl font-black text-slate-950">Your cart is empty</p>
+                <p className="mt-2 text-sm leading-7 text-slate-600">Pick a shawarma, switch a size, then come back here to review it.</p>
               </div>
             ) : (
               <>
                 <div className="flex-1 space-y-4 overflow-y-auto p-6">
+                  {cartStep === "review" ? (
+                    <>
                   {cart.map((item) => (
-                    <div key={lineId(item.id, item.size)} className="flex gap-4 rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-3">
-                      <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-[1.1rem] bg-black">
-                        <Image src={item.image} alt={item.name} fill className="object-cover saturate-[1.12]" sizes="80px" />
+                    <div key={lineId(item.id, item.size)} className="flex gap-4 rounded-[1.5rem] border border-orange-100 bg-orange-50/60 p-3">
+                      <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-[1.1rem] bg-white">
+                        <Image src={item.image} alt={item.name} fill className="object-cover" sizes="80px" />
                       </div>
 
                       <div className="flex flex-1 flex-col justify-between">
                         <div>
-                          <p className="text-sm font-black text-white">{item.name}</p>
+                          <p className="text-sm font-black text-slate-950">{item.name}</p>
                           <p className="mt-1 text-xs font-semibold uppercase tracking-[0.15em] text-slate-500">
                             {sizeLabels[item.size]} / {formatCurrency(item.price)}
                           </p>
                         </div>
 
                         <div className="mt-3 flex items-center justify-between">
-                          <div className="flex items-center gap-2 rounded-full bg-white/[0.06] p-1">
-                            <button type="button" onClick={() => removeFromCart(item.id, item.size)} className="rounded-full p-2 text-white/65 transition hover:bg-white/10 hover:text-orange-200">
+                          <div className="flex items-center gap-2 rounded-full bg-white p-1">
+                            <button type="button" onClick={() => removeFromCart(item.id, item.size)} className="rounded-full p-2 text-slate-600 transition hover:bg-orange-50 hover:text-orange-600">
                               <Minus className="h-3.5 w-3.5" />
                             </button>
-                            <span className="min-w-5 text-center text-sm font-black text-white">{item.quantity}</span>
+                            <span className="min-w-5 text-center text-sm font-black text-slate-950">{item.quantity}</span>
                             <button
                               type="button"
                               onClick={() => {
@@ -867,52 +976,144 @@ export function ChillingtonShowcase() {
                                   addToCart(source, item.size);
                                 }
                               }}
-                              className="rounded-full p-2 text-white/65 transition hover:bg-white/10 hover:text-orange-200"
+                              className="rounded-full p-2 text-slate-600 transition hover:bg-orange-50 hover:text-orange-600"
                             >
                               <Plus className="h-3.5 w-3.5" />
                             </button>
                           </div>
 
-                          <p className="text-sm font-black text-white">{formatCurrency(item.quantity * item.price)}</p>
+                          <p className="text-sm font-black text-slate-950">{formatCurrency(item.quantity * item.price)}</p>
                         </div>
                       </div>
                     </div>
                   ))}
+                    <div className="rounded-[1.5rem] border border-slate-200 bg-slate-50 px-4 py-4">
+                      <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Review your order</p>
+                      <p className="mt-2 text-sm leading-6 text-slate-600">Adjust quantity, remove any item you do not want, then continue to enter delivery details.</p>
+                    </div>
+                    </>
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="rounded-[1.5rem] border border-orange-100 bg-orange-50/60 p-4">
+                        <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Customer details</p>
+                        <p className="mt-2 text-sm text-slate-600">Fill this in before proceeding with your order on WhatsApp.</p>
+                      </div>
+
+                      <label className="block">
+                        <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Full name</span>
+                        <input
+                          value={customerDetails.name}
+                          onChange={(event) => updateCustomerDetail("name", event.target.value)}
+                          placeholder="Your name"
+                          className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
+                        />
+                        {customerErrors.name ? <p className="mt-2 text-xs font-semibold text-red-500">{customerErrors.name}</p> : null}
+                      </label>
+
+                      <label className="block">
+                        <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Email</span>
+                        <input
+                          value={customerDetails.email}
+                          onChange={(event) => updateCustomerDetail("email", event.target.value)}
+                          placeholder="you@example.com"
+                          className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
+                        />
+                        {customerErrors.email ? <p className="mt-2 text-xs font-semibold text-red-500">{customerErrors.email}</p> : null}
+                      </label>
+
+                      <label className="block">
+                        <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Phone</span>
+                        <input
+                          value={customerDetails.phone}
+                          onChange={(event) => updateCustomerDetail("phone", event.target.value)}
+                          placeholder="0800 000 0000"
+                          className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
+                        />
+                        {customerErrors.phone ? <p className="mt-2 text-xs font-semibold text-red-500">{customerErrors.phone}</p> : null}
+                      </label>
+
+                      <label className="block">
+                        <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Location / address</span>
+                        <textarea
+                          value={customerDetails.location}
+                          onChange={(event) => updateCustomerDetail("location", event.target.value)}
+                          placeholder="Delivery address in Akure"
+                          rows={3}
+                          className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
+                        />
+                        {customerErrors.location ? <p className="mt-2 text-xs font-semibold text-red-500">{customerErrors.location}</p> : null}
+                      </label>
+
+                      <label className="block">
+                        <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Extra note</span>
+                        <textarea
+                          value={customerDetails.note}
+                          onChange={(event) => updateCustomerDetail("note", event.target.value)}
+                          placeholder="Optional note for delivery or spice preference"
+                          rows={2}
+                          className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
+                        />
+                      </label>
+
+                      <div className="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-4">
+                        <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Order summary</p>
+                        <div className="mt-3 space-y-2 text-sm text-slate-600">
+                          {cart.map((item) => (
+                            <div key={`summary-${lineId(item.id, item.size)}`} className="flex items-center justify-between gap-3">
+                              <span>{item.name} ({sizeLabels[item.size]}) x{item.quantity}</span>
+                              <span className="font-semibold text-slate-900">{formatCurrency(item.quantity * item.price)}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                <div className="border-t border-white/10 bg-white/[0.03] p-6">
+                <div className="border-t border-orange-100 bg-orange-50/60 p-6">
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm text-white/55">
+                    <div className="flex items-center justify-between text-sm text-slate-600">
                       <span>Subtotal</span>
                       <span>{formatCurrency(cartTotal)}</span>
                     </div>
-                    <div className="flex items-center justify-between text-sm text-white/55">
+                    <div className="flex items-center justify-between text-sm text-slate-600">
                       <span>Delivery</span>
                       <span>To confirm</span>
                     </div>
-                    <div className="flex items-center justify-between border-t border-white/10 pt-3 text-lg font-black text-white">
+                    <div className="flex items-center justify-between border-t border-orange-100 pt-3 text-lg font-black text-slate-950">
                       <span>Total</span>
                       <span>{formatCurrency(cartTotal)}</span>
                     </div>
                   </div>
 
-                  <a
-                    href={`https://wa.me/2347032891651?text=${encodeURIComponent(
-                      [
-                        "Hello, I want to order:",
-                        "",
-                        ...cart.map((item) => `- ${item.name} (${sizeLabels[item.size]}) x${item.quantity}`),
-                        "",
-                        `Total: ${formatCurrency(cartTotal)}`,
-                      ].join("\n"),
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-5 flex items-center justify-center gap-2 rounded-[1.35rem] bg-orange-500 px-6 py-4 text-sm font-semibold text-white transition hover:bg-orange-400"
-                  >
-                    Send order to WhatsApp
-                    <ChevronRight className="h-4 w-4" />
-                  </a>
+                  {cartStep === "review" ? (
+                    <button
+                      type="button"
+                      onClick={proceedToDetails}
+                      className="mt-5 flex w-full items-center justify-center gap-2 rounded-[1.35rem] bg-slate-950 px-6 py-4 text-sm font-semibold text-white transition hover:bg-slate-800"
+                    >
+                      Proceed with order
+                      <ChevronRight className="h-4 w-4" />
+                    </button>
+                  ) : (
+                    <div className="mt-5 grid gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setCartStep("review")}
+                        className="flex w-full items-center justify-center gap-2 rounded-[1.35rem] border border-slate-200 bg-white px-6 py-4 text-sm font-semibold text-slate-900 transition hover:border-orange-300 hover:text-orange-600"
+                      >
+                        Edit order
+                      </button>
+                      <button
+                        type="button"
+                        onClick={openWhatsAppOrder}
+                        className="flex w-full items-center justify-center gap-2 rounded-[1.35rem] bg-orange-500 px-6 py-4 text-sm font-semibold text-white transition hover:bg-orange-600"
+                      >
+                        Confirm and proceed
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </>
             )}
