@@ -293,6 +293,14 @@ export function ChillingtonShowcase() {
     setCartMessage(`${item.name} added to cart`);
   }
 
+  function increaseCartItem(itemId: string, size: MenuSize) {
+    setCart((current) =>
+      current.map((entry) =>
+        lineId(entry.id, entry.size) === lineId(itemId, size) ? { ...entry, quantity: entry.quantity + 1 } : entry,
+      ),
+    );
+  }
+
   function removeFromCart(itemId: string, size: MenuSize) {
     setCart((current) => {
       const existing = current.find((entry) => lineId(entry.id, entry.size) === lineId(itemId, size));
@@ -998,12 +1006,7 @@ export function ChillingtonShowcase() {
                             <span className="min-w-5 text-center text-sm font-black text-slate-950">{item.quantity}</span>
                             <button
                               type="button"
-                              onClick={() => {
-                                const source = allItems.find((entry) => entry.id === item.id);
-                                if (source) {
-                                  addToCart(source, item.size);
-                                }
-                              }}
+                              onClick={() => increaseCartItem(item.id, item.size)}
                               className="rounded-full p-2 text-slate-600 transition hover:bg-orange-50 hover:text-orange-600"
                             >
                               <Plus className="h-3.5 w-3.5" />
