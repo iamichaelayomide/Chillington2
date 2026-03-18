@@ -692,7 +692,7 @@ export function ChillingtonShowcase() {
         </div>
       </section>
 
-      <section id="about" className="px-4 py-20 text-white sm:px-6 lg:px-8">
+      <section id="about" className="bg-slate-950 px-4 py-20 text-white sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
           <div className="relative min-h-[360px] overflow-hidden rounded-[2rem] border border-white/10 bg-[#1b1512] shadow-[0_25px_60px_rgba(0,0,0,0.4)] sm:min-h-[440px] lg:min-h-[520px]">
             <Image
@@ -714,8 +714,8 @@ export function ChillingtonShowcase() {
               signature recipe.
             </h2>
 
-            <p className="mt-6 max-w-2xl text-base leading-8 text-white/62">
-              The structure stays simple: browse, pick, customise, and order fast. The new direction just gives the brand a darker, richer frame so the food carries more weight visually.
+            <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300">
+              Chillington Bites keeps it simple: proper shawarma, generous fillings, clean prep, and fast ordering for Akure customers who already know what good wraps should taste like.
             </p>
 
             <ul className="mt-8 space-y-3">
@@ -725,7 +725,7 @@ export function ChillingtonShowcase() {
                 "Built for Akure cravings and fast WhatsApp checkout",
                 "Wraps prepared hot, filled generously, and packed clean",
               ].map((point) => (
-                <li key={point} className="flex items-start gap-3 text-sm text-white/68">
+                <li key={point} className="flex items-start gap-3 text-sm text-slate-300">
                   <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-orange-500">
                     <Check className="h-3.5 w-3.5 text-white" />
                   </span>
@@ -737,41 +737,41 @@ export function ChillingtonShowcase() {
         </div>
       </section>
 
-      <footer id="footer" className="border-t border-white/8 bg-[#0a0a0a] px-4 pb-8 pt-16 sm:px-6 lg:px-8">
+      <footer id="footer" className="border-t border-orange-100 bg-white px-4 pb-8 pt-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 grid gap-12 md:grid-cols-3">
             <div className="space-y-5">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full border border-orange-400/40 bg-orange-500/15 text-orange-300 shadow-[0_0_24px_rgba(249,115,22,0.35)]">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-orange-500 text-white shadow-lg shadow-orange-200">
                   <Flame className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-orange-300/80">Chillington</p>
-                  <p className="text-lg font-black uppercase tracking-tight text-white">Bites V2</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-orange-500">Chillington</p>
+                  <p className="text-lg font-black uppercase tracking-tight text-neutral-950">Bites V2</p>
                 </div>
               </div>
-              <p className="text-sm leading-7 text-white/55">
-                Darker surface, same ordering flow, and a stronger product-first presentation for Chillington Bites.
+              <p className="text-sm leading-7 text-slate-600">
+                Fresh wraps, fast WhatsApp ordering, and a cleaner storefront built around what people actually come for.
               </p>
               <div className="flex gap-3">
-                <a href="https://www.facebook.com/ChillingtonShawarma" target="_blank" rel="noopener noreferrer" className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-white/65 transition hover:border-orange-300/40 hover:bg-orange-500 hover:text-white">
+                <a href="https://www.facebook.com/ChillingtonShawarma" target="_blank" rel="noopener noreferrer" className="rounded-xl bg-neutral-100 p-3 text-neutral-600 transition hover:bg-orange-500 hover:text-white">
                   <Facebook className="h-4 w-4" />
                 </a>
-                <a href="https://www.instagram.com/chillington_bites" target="_blank" rel="noopener noreferrer" className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-white/65 transition hover:border-orange-300/40 hover:bg-orange-500 hover:text-white">
+                <a href="https://www.instagram.com/chillington_bites" target="_blank" rel="noopener noreferrer" className="rounded-xl bg-neutral-100 p-3 text-neutral-600 transition hover:bg-orange-500 hover:text-white">
                   <Instagram className="h-4 w-4" />
                 </a>
               </div>
             </div>
 
             <div>
-              <h3 className="text-sm font-black uppercase tracking-[0.22em] text-white">Contact &amp; Hours</h3>
-              <ul className="mt-6 space-y-4 text-sm text-white/58">
+              <h3 className="text-sm font-black uppercase tracking-[0.22em] text-slate-900">Contact &amp; Hours</h3>
+              <ul className="mt-6 space-y-4 text-sm text-slate-600">
                 <li className="flex items-start gap-3">
-                  <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-orange-300" />
+                  <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-orange-500" />
                   <span>No.1 HACO Building, Ori-Eguru Street, Arakale, Akure, Ondo State</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <Clock3 className="h-4 w-4 flex-shrink-0 text-orange-300" />
+                  <Clock3 className="h-4 w-4 flex-shrink-0 text-orange-500" />
                   <span>Open daily. WhatsApp confirms delivery windows.</span>
                 </li>
               </ul>
