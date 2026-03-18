@@ -17,6 +17,7 @@ import {
   Search,
   ShoppingBag,
   Sparkles,
+  Trash2,
   X,
 } from "lucide-react";
 
@@ -157,6 +158,7 @@ export function ChillingtonShowcase() {
   const [selectedSizes, setSelectedSizes] = useState<Record<string, MenuSize>>({});
   const [cart, setCart] = useState<CartItem[]>([]);
   const [activeMenuSection, setActiveMenuSection] = useState("premium");
+  const [cartStep, setCartStep] = useState<"review" | "details">("review");
   const [cartMessage, setCartMessage] = useState("");
   const [customerDetails, setCustomerDetails] = useState<CustomerDetails>({
     name: "",
@@ -247,6 +249,14 @@ export function ChillingtonShowcase() {
   }, [mobileNavOpen]);
 
   useEffect(() => {
+    if (!cartOpen) {
+      return;
+    }
+
+    setCartStep("review");
+  }, [cartOpen]);
+
+  useEffect(() => {
     if (!cartMessage) {
       return;
     }
@@ -300,6 +310,10 @@ export function ChillingtonShowcase() {
     });
   }
 
+  function deleteFromCart(itemId: string, size: MenuSize) {
+    setCart((current) => current.filter((entry) => lineId(entry.id, entry.size) !== lineId(itemId, size)));
+  }
+
   function updateCustomerDetail(field: keyof CustomerDetails, value: string) {
     setCustomerDetails((current) => ({ ...current, [field]: value }));
     setCustomerErrors((current) => ({ ...current, [field]: "" }));
@@ -326,6 +340,10 @@ export function ChillingtonShowcase() {
 
     setCustomerErrors(nextErrors);
     return Object.keys(nextErrors).length === 0;
+  }
+
+  function continueToOrder() {
+    setCartStep("details");
   }
 
   function openWhatsAppOrder() {
@@ -914,10 +932,20 @@ export function ChillingtonShowcase() {
           <aside className="absolute bottom-0 right-0 top-0 flex w-full max-w-md flex-col border-l border-orange-100 bg-white shadow-2xl">
             <div className="flex items-center justify-between border-b border-orange-100 px-4 py-4 sm:px-6 sm:py-5">
               <div className="flex items-center gap-3">
-                <ShoppingBag className="h-5 w-5 text-orange-500" />
+                {cartStep === "details" ? (
+                  <button
+                    type="button"
+                    onClick={() => setCartStep("review")}
+                    className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:border-orange-300 hover:text-orange-600"
+                  >
+                    <ChevronRight className="h-4 w-4 rotate-180" />
+                  </button>
+                ) : (
+                  <ShoppingBag className="h-5 w-5 text-orange-500" />
+                )}
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-600">Your order</p>
-                  <h3 className="text-base font-black text-slate-950 sm:text-lg">Cart and delivery details</h3>
+                  <h3 className="text-base font-black text-slate-950 sm:text-lg">{cartStep === "review" ? "Review your cart" : "Delivery details"}</h3>
                 </div>
               </div>
               <button type="button" onClick={() => setCartOpen(false)} className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:border-orange-300 hover:text-orange-600">
@@ -936,6 +964,8 @@ export function ChillingtonShowcase() {
             ) : (
               <>
                 <div className="flex-1 space-y-4 overflow-y-auto p-4 sm:p-6">
+                  {cartStep === "review" ? (
+                    <>
                   {cart.map((item) => (
                     <div key={lineId(item.id, item.size)} className="flex gap-3 rounded-[1.35rem] border border-orange-100 bg-orange-50/60 p-3 sm:gap-4 sm:rounded-[1.5rem]">
                       <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-[1rem] bg-white sm:h-20 sm:w-20 sm:rounded-[1.1rem]">
@@ -944,7 +974,17 @@ export function ChillingtonShowcase() {
 
                       <div className="flex flex-1 flex-col justify-between">
                         <div>
-                          <p className="text-sm font-black text-slate-950">{item.name}</p>
+                          <div className="flex items-start justify-between gap-3">
+                            <p className="text-sm font-black text-slate-950">{item.name}</p>
+                            <button
+                              type="button"
+                              onClick={() => deleteFromCart(item.id, item.size)}
+                              className="rounded-full p-1.5 text-slate-400 transition hover:bg-white hover:text-red-500"
+                              aria-label={`Delete ${item.name}`}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                          </div>
                           <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-500 sm:text-xs">
                             {sizeLabels[item.size]} / {formatCurrency(item.price)}
                           </p>
@@ -977,7 +1017,21 @@ export function ChillingtonShowcase() {
                   ))}
                   <div className="rounded-[1.35rem] border border-slate-200 bg-slate-50 px-4 py-4 sm:rounded-[1.5rem]">
                     <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Review your order</p>
-                    <p className="mt-2 text-sm leading-6 text-slate-600">Adjust quantity, remove any item you do not want, then fill your delivery details below.</p>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">Adjust quantity, delete any item you do not want, then continue to the next screen for delivery details.</p>
+                  </div>
+                    </>
+                  ) : (
+                    <>
+                  <div className="rounded-[1.35rem] border border-slate-200 bg-slate-50 px-4 py-4 sm:rounded-[1.5rem]">
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Order summary</p>
+                    <div className="mt-3 space-y-2 text-sm text-slate-600">
+                      {cart.map((item) => (
+                        <div key={`summary-${lineId(item.id, item.size)}`} className="flex items-center justify-between gap-3">
+                          <span>{item.name} ({sizeLabels[item.size]}) x{item.quantity}</span>
+                          <span className="font-semibold text-slate-900">{formatCurrency(item.quantity * item.price)}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
                   <div className="space-y-4">
@@ -1042,18 +1096,9 @@ export function ChillingtonShowcase() {
                       />
                     </label>
 
-                    <div className="rounded-[1.35rem] border border-slate-200 bg-slate-50 p-4 sm:rounded-[1.5rem]">
-                      <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Order summary</p>
-                      <div className="mt-3 space-y-2 text-sm text-slate-600">
-                        {cart.map((item) => (
-                          <div key={`summary-${lineId(item.id, item.size)}`} className="flex items-center justify-between gap-3">
-                            <span>{item.name} ({sizeLabels[item.size]}) x{item.quantity}</span>
-                            <span className="font-semibold text-slate-900">{formatCurrency(item.quantity * item.price)}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
                   </div>
+                    </>
+                  )}
                 </div>
 
                 <div className="border-t border-orange-100 bg-orange-50/60 p-4 sm:p-6">
@@ -1073,14 +1118,25 @@ export function ChillingtonShowcase() {
                   </div>
 
                   <div className="mt-5 grid gap-3">
-                    <button
-                      type="button"
-                      onClick={openWhatsAppOrder}
-                      className="flex w-full items-center justify-center gap-2 rounded-[1.2rem] bg-orange-500 px-6 py-4 text-sm font-semibold text-white transition hover:bg-orange-600 sm:rounded-[1.35rem]"
-                    >
-                      Confirm and proceed
-                      <ChevronRight className="h-4 w-4" />
-                    </button>
+                    {cartStep === "review" ? (
+                      <button
+                        type="button"
+                        onClick={continueToOrder}
+                        className="flex w-full items-center justify-center gap-2 rounded-[1.2rem] bg-slate-950 px-6 py-4 text-sm font-semibold text-white transition hover:bg-slate-800 sm:rounded-[1.35rem]"
+                      >
+                        Continue with order
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={openWhatsAppOrder}
+                        className="flex w-full items-center justify-center gap-2 rounded-[1.2rem] bg-orange-500 px-6 py-4 text-sm font-semibold text-white transition hover:bg-orange-600 sm:rounded-[1.35rem]"
+                      >
+                        Send message to WhatsApp
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
+                    )}
                   </div>
                 </div>
               </>
