@@ -157,7 +157,6 @@ export function ChillingtonShowcase() {
   const [selectedSizes, setSelectedSizes] = useState<Record<string, MenuSize>>({});
   const [cart, setCart] = useState<CartItem[]>([]);
   const [activeMenuSection, setActiveMenuSection] = useState("premium");
-  const [cartStep, setCartStep] = useState<"review" | "details">("review");
   const [cartMessage, setCartMessage] = useState("");
   const [customerDetails, setCustomerDetails] = useState<CustomerDetails>({
     name: "",
@@ -329,10 +328,6 @@ export function ChillingtonShowcase() {
     return Object.keys(nextErrors).length === 0;
   }
 
-  function proceedToDetails() {
-    setCartStep("details");
-  }
-
   function openWhatsAppOrder() {
     if (!validateCustomerDetails()) {
       return;
@@ -361,12 +356,17 @@ export function ChillingtonShowcase() {
   return (
     <main className="min-h-screen bg-[#edf2f7] text-neutral-900">
       {cartMessage ? (
-        <div className="fixed right-4 top-20 z-[70] rounded-[1.2rem] border border-green-200 bg-white px-4 py-3 shadow-lg sm:right-6">
-          <div className="flex items-center gap-3">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 text-green-700">
+        <div className="fixed inset-0 z-[70] flex items-start justify-center px-4 pt-24 pointer-events-none">
+          <div className="rounded-[1.4rem] border border-green-200 bg-white px-5 py-4 shadow-2xl">
+            <div className="flex items-center gap-3">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-green-100 text-green-700">
               <Check className="h-4 w-4" />
             </span>
-            <p className="text-sm font-semibold text-slate-900">{cartMessage}</p>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-700">Added to cart</p>
+                <p className="mt-1 text-sm font-semibold text-slate-900">{cartMessage}</p>
+              </div>
+            </div>
           </div>
         </div>
       ) : null}
@@ -914,20 +914,10 @@ export function ChillingtonShowcase() {
           <aside className="absolute bottom-0 right-0 top-0 flex w-full max-w-md flex-col border-l border-orange-100 bg-white shadow-2xl">
             <div className="flex items-center justify-between border-b border-orange-100 px-6 py-5">
               <div className="flex items-center gap-3">
-                {cartStep === "details" ? (
-                  <button
-                    type="button"
-                    onClick={() => setCartStep("review")}
-                    className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:border-orange-300 hover:text-orange-600"
-                  >
-                    <ChevronRight className="h-4 w-4 rotate-180" />
-                  </button>
-                ) : (
-                  <ShoppingBag className="h-5 w-5 text-orange-500" />
-                )}
+                <ShoppingBag className="h-5 w-5 text-orange-500" />
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-600">Your order</p>
-                  <h3 className="text-lg font-black text-slate-950">{cartStep === "review" ? "Cart" : "Order details"}</h3>
+                  <h3 className="text-lg font-black text-slate-950">Cart and delivery details</h3>
                 </div>
               </div>
               <button type="button" onClick={() => setCartOpen(false)} className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:border-orange-300 hover:text-orange-600">
@@ -946,8 +936,6 @@ export function ChillingtonShowcase() {
             ) : (
               <>
                 <div className="flex-1 space-y-4 overflow-y-auto p-6">
-                  {cartStep === "review" ? (
-                    <>
                   {cart.map((item) => (
                     <div key={lineId(item.id, item.size)} className="flex gap-4 rounded-[1.5rem] border border-orange-100 bg-orange-50/60 p-3">
                       <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-[1.1rem] bg-white">
@@ -987,87 +975,85 @@ export function ChillingtonShowcase() {
                       </div>
                     </div>
                   ))}
-                    <div className="rounded-[1.5rem] border border-slate-200 bg-slate-50 px-4 py-4">
-                      <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Review your order</p>
-                      <p className="mt-2 text-sm leading-6 text-slate-600">Adjust quantity, remove any item you do not want, then continue to enter delivery details.</p>
+                  <div className="rounded-[1.5rem] border border-slate-200 bg-slate-50 px-4 py-4">
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Review your order</p>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">Adjust quantity, remove any item you do not want, then fill your delivery details below.</p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="rounded-[1.5rem] border border-orange-100 bg-orange-50/60 p-4">
+                      <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Customer details</p>
+                      <p className="mt-2 text-sm text-slate-600">Enter your details before sending the order to customer care.</p>
                     </div>
-                    </>
-                  ) : (
-                    <div className="space-y-4">
-                      <div className="rounded-[1.5rem] border border-orange-100 bg-orange-50/60 p-4">
-                        <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Customer details</p>
-                        <p className="mt-2 text-sm text-slate-600">Fill this in before proceeding with your order on WhatsApp.</p>
-                      </div>
 
-                      <label className="block">
-                        <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Full name</span>
-                        <input
-                          value={customerDetails.name}
-                          onChange={(event) => updateCustomerDetail("name", event.target.value)}
-                          placeholder="Your name"
-                          className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
-                        />
-                        {customerErrors.name ? <p className="mt-2 text-xs font-semibold text-red-500">{customerErrors.name}</p> : null}
-                      </label>
+                    <label className="block">
+                      <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Full name</span>
+                      <input
+                        value={customerDetails.name}
+                        onChange={(event) => updateCustomerDetail("name", event.target.value)}
+                        placeholder="Your name"
+                        className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
+                      />
+                      {customerErrors.name ? <p className="mt-2 text-xs font-semibold text-red-500">{customerErrors.name}</p> : null}
+                    </label>
 
-                      <label className="block">
-                        <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Email</span>
-                        <input
-                          value={customerDetails.email}
-                          onChange={(event) => updateCustomerDetail("email", event.target.value)}
-                          placeholder="you@example.com"
-                          className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
-                        />
-                        {customerErrors.email ? <p className="mt-2 text-xs font-semibold text-red-500">{customerErrors.email}</p> : null}
-                      </label>
+                    <label className="block">
+                      <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Email</span>
+                      <input
+                        value={customerDetails.email}
+                        onChange={(event) => updateCustomerDetail("email", event.target.value)}
+                        placeholder="you@example.com"
+                        className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
+                      />
+                      {customerErrors.email ? <p className="mt-2 text-xs font-semibold text-red-500">{customerErrors.email}</p> : null}
+                    </label>
 
-                      <label className="block">
-                        <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Phone</span>
-                        <input
-                          value={customerDetails.phone}
-                          onChange={(event) => updateCustomerDetail("phone", event.target.value)}
-                          placeholder="0800 000 0000"
-                          className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
-                        />
-                        {customerErrors.phone ? <p className="mt-2 text-xs font-semibold text-red-500">{customerErrors.phone}</p> : null}
-                      </label>
+                    <label className="block">
+                      <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Phone</span>
+                      <input
+                        value={customerDetails.phone}
+                        onChange={(event) => updateCustomerDetail("phone", event.target.value)}
+                        placeholder="0800 000 0000"
+                        className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
+                      />
+                      {customerErrors.phone ? <p className="mt-2 text-xs font-semibold text-red-500">{customerErrors.phone}</p> : null}
+                    </label>
 
-                      <label className="block">
-                        <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Location / address</span>
-                        <textarea
-                          value={customerDetails.location}
-                          onChange={(event) => updateCustomerDetail("location", event.target.value)}
-                          placeholder="Delivery address in Akure"
-                          rows={3}
-                          className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
-                        />
-                        {customerErrors.location ? <p className="mt-2 text-xs font-semibold text-red-500">{customerErrors.location}</p> : null}
-                      </label>
+                    <label className="block">
+                      <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Location / address</span>
+                      <textarea
+                        value={customerDetails.location}
+                        onChange={(event) => updateCustomerDetail("location", event.target.value)}
+                        placeholder="Delivery address in Akure"
+                        rows={3}
+                        className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
+                      />
+                      {customerErrors.location ? <p className="mt-2 text-xs font-semibold text-red-500">{customerErrors.location}</p> : null}
+                    </label>
 
-                      <label className="block">
-                        <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Extra note</span>
-                        <textarea
-                          value={customerDetails.note}
-                          onChange={(event) => updateCustomerDetail("note", event.target.value)}
-                          placeholder="Optional note for delivery or spice preference"
-                          rows={2}
-                          className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
-                        />
-                      </label>
+                    <label className="block">
+                      <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Extra note</span>
+                      <textarea
+                        value={customerDetails.note}
+                        onChange={(event) => updateCustomerDetail("note", event.target.value)}
+                        placeholder="Optional note for delivery or spice preference"
+                        rows={2}
+                        className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
+                      />
+                    </label>
 
-                      <div className="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-4">
-                        <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Order summary</p>
-                        <div className="mt-3 space-y-2 text-sm text-slate-600">
-                          {cart.map((item) => (
-                            <div key={`summary-${lineId(item.id, item.size)}`} className="flex items-center justify-between gap-3">
-                              <span>{item.name} ({sizeLabels[item.size]}) x{item.quantity}</span>
-                              <span className="font-semibold text-slate-900">{formatCurrency(item.quantity * item.price)}</span>
-                            </div>
-                          ))}
-                        </div>
+                    <div className="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-4">
+                      <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Order summary</p>
+                      <div className="mt-3 space-y-2 text-sm text-slate-600">
+                        {cart.map((item) => (
+                          <div key={`summary-${lineId(item.id, item.size)}`} className="flex items-center justify-between gap-3">
+                            <span>{item.name} ({sizeLabels[item.size]}) x{item.quantity}</span>
+                            <span className="font-semibold text-slate-900">{formatCurrency(item.quantity * item.price)}</span>
+                          </div>
+                        ))}
                       </div>
                     </div>
-                  )}
+                  </div>
                 </div>
 
                 <div className="border-t border-orange-100 bg-orange-50/60 p-6">
@@ -1086,34 +1072,16 @@ export function ChillingtonShowcase() {
                     </div>
                   </div>
 
-                  {cartStep === "review" ? (
+                  <div className="mt-5 grid gap-3">
                     <button
                       type="button"
-                      onClick={proceedToDetails}
-                      className="mt-5 flex w-full items-center justify-center gap-2 rounded-[1.35rem] bg-slate-950 px-6 py-4 text-sm font-semibold text-white transition hover:bg-slate-800"
+                      onClick={openWhatsAppOrder}
+                      className="flex w-full items-center justify-center gap-2 rounded-[1.35rem] bg-orange-500 px-6 py-4 text-sm font-semibold text-white transition hover:bg-orange-600"
                     >
-                      Proceed with order
+                      Confirm and proceed
                       <ChevronRight className="h-4 w-4" />
                     </button>
-                  ) : (
-                    <div className="mt-5 grid gap-3">
-                      <button
-                        type="button"
-                        onClick={() => setCartStep("review")}
-                        className="flex w-full items-center justify-center gap-2 rounded-[1.35rem] border border-slate-200 bg-white px-6 py-4 text-sm font-semibold text-slate-900 transition hover:border-orange-300 hover:text-orange-600"
-                      >
-                        Edit order
-                      </button>
-                      <button
-                        type="button"
-                        onClick={openWhatsAppOrder}
-                        className="flex w-full items-center justify-center gap-2 rounded-[1.35rem] bg-orange-500 px-6 py-4 text-sm font-semibold text-white transition hover:bg-orange-600"
-                      >
-                        Confirm and proceed
-                        <ChevronRight className="h-4 w-4" />
-                      </button>
-                    </div>
-                  )}
+                  </div>
                 </div>
               </>
             )}
