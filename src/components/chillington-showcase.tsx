@@ -356,8 +356,8 @@ export function ChillingtonShowcase() {
   return (
     <main className="min-h-screen bg-[#edf2f7] text-neutral-900">
       {cartMessage ? (
-        <div className="fixed inset-0 z-[70] flex items-start justify-center px-4 pt-24 pointer-events-none">
-          <div className="rounded-[1.4rem] border border-green-200 bg-white px-5 py-4 shadow-2xl">
+        <div className="fixed bottom-5 right-4 z-[70] pointer-events-none sm:bottom-6 sm:right-6">
+          <div className="max-w-[18rem] rounded-[1.4rem] border border-green-200 bg-white px-5 py-4 shadow-2xl">
             <div className="flex items-center gap-3">
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-green-100 text-green-700">
               <Check className="h-4 w-4" />
@@ -912,12 +912,12 @@ export function ChillingtonShowcase() {
         <div className="fixed inset-0 z-50">
           <button type="button" aria-label="Close cart" onClick={() => setCartOpen(false)} className="absolute inset-0 bg-black/70" />
           <aside className="absolute bottom-0 right-0 top-0 flex w-full max-w-md flex-col border-l border-orange-100 bg-white shadow-2xl">
-            <div className="flex items-center justify-between border-b border-orange-100 px-6 py-5">
+            <div className="flex items-center justify-between border-b border-orange-100 px-4 py-4 sm:px-6 sm:py-5">
               <div className="flex items-center gap-3">
                 <ShoppingBag className="h-5 w-5 text-orange-500" />
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-600">Your order</p>
-                  <h3 className="text-lg font-black text-slate-950">Cart and delivery details</h3>
+                  <h3 className="text-base font-black text-slate-950 sm:text-lg">Cart and delivery details</h3>
                 </div>
               </div>
               <button type="button" onClick={() => setCartOpen(false)} className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:border-orange-300 hover:text-orange-600">
@@ -926,7 +926,7 @@ export function ChillingtonShowcase() {
             </div>
 
             {!cart.length ? (
-              <div className="flex flex-1 flex-col items-center justify-center px-8 text-center">
+              <div className="flex flex-1 flex-col items-center justify-center px-6 text-center sm:px-8">
                 <div className="rounded-full bg-orange-50 p-5">
                   <ShoppingBag className="h-8 w-8 text-orange-500" />
                 </div>
@@ -935,22 +935,22 @@ export function ChillingtonShowcase() {
               </div>
             ) : (
               <>
-                <div className="flex-1 space-y-4 overflow-y-auto p-6">
+                <div className="flex-1 space-y-4 overflow-y-auto p-4 sm:p-6">
                   {cart.map((item) => (
-                    <div key={lineId(item.id, item.size)} className="flex gap-4 rounded-[1.5rem] border border-orange-100 bg-orange-50/60 p-3">
-                      <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-[1.1rem] bg-white">
+                    <div key={lineId(item.id, item.size)} className="flex gap-3 rounded-[1.35rem] border border-orange-100 bg-orange-50/60 p-3 sm:gap-4 sm:rounded-[1.5rem]">
+                      <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-[1rem] bg-white sm:h-20 sm:w-20 sm:rounded-[1.1rem]">
                         <Image src={item.image} alt={item.name} fill className="object-cover" sizes="80px" />
                       </div>
 
                       <div className="flex flex-1 flex-col justify-between">
                         <div>
                           <p className="text-sm font-black text-slate-950">{item.name}</p>
-                          <p className="mt-1 text-xs font-semibold uppercase tracking-[0.15em] text-slate-500">
+                          <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-500 sm:text-xs">
                             {sizeLabels[item.size]} / {formatCurrency(item.price)}
                           </p>
                         </div>
 
-                        <div className="mt-3 flex items-center justify-between">
+                        <div className="mt-3 flex items-center justify-between gap-3">
                           <div className="flex items-center gap-2 rounded-full bg-white p-1">
                             <button type="button" onClick={() => removeFromCart(item.id, item.size)} className="rounded-full p-2 text-slate-600 transition hover:bg-orange-50 hover:text-orange-600">
                               <Minus className="h-3.5 w-3.5" />
@@ -970,18 +970,18 @@ export function ChillingtonShowcase() {
                             </button>
                           </div>
 
-                          <p className="text-sm font-black text-slate-950">{formatCurrency(item.quantity * item.price)}</p>
+                          <p className="text-sm font-black text-slate-950 sm:text-base">{formatCurrency(item.quantity * item.price)}</p>
                         </div>
                       </div>
                     </div>
                   ))}
-                  <div className="rounded-[1.5rem] border border-slate-200 bg-slate-50 px-4 py-4">
+                  <div className="rounded-[1.35rem] border border-slate-200 bg-slate-50 px-4 py-4 sm:rounded-[1.5rem]">
                     <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Review your order</p>
                     <p className="mt-2 text-sm leading-6 text-slate-600">Adjust quantity, remove any item you do not want, then fill your delivery details below.</p>
                   </div>
 
                   <div className="space-y-4">
-                    <div className="rounded-[1.5rem] border border-orange-100 bg-orange-50/60 p-4">
+                    <div className="rounded-[1.35rem] border border-orange-100 bg-orange-50/60 p-4 sm:rounded-[1.5rem]">
                       <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Customer details</p>
                       <p className="mt-2 text-sm text-slate-600">Enter your details before sending the order to customer care.</p>
                     </div>
@@ -992,7 +992,7 @@ export function ChillingtonShowcase() {
                         value={customerDetails.name}
                         onChange={(event) => updateCustomerDetail("name", event.target.value)}
                         placeholder="Your name"
-                        className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
+                        className="w-full rounded-[1rem] border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-orange-400 sm:rounded-[1.2rem] sm:py-4"
                       />
                       {customerErrors.name ? <p className="mt-2 text-xs font-semibold text-red-500">{customerErrors.name}</p> : null}
                     </label>
@@ -1003,7 +1003,7 @@ export function ChillingtonShowcase() {
                         value={customerDetails.email}
                         onChange={(event) => updateCustomerDetail("email", event.target.value)}
                         placeholder="you@example.com"
-                        className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
+                        className="w-full rounded-[1rem] border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-orange-400 sm:rounded-[1.2rem] sm:py-4"
                       />
                       {customerErrors.email ? <p className="mt-2 text-xs font-semibold text-red-500">{customerErrors.email}</p> : null}
                     </label>
@@ -1014,7 +1014,7 @@ export function ChillingtonShowcase() {
                         value={customerDetails.phone}
                         onChange={(event) => updateCustomerDetail("phone", event.target.value)}
                         placeholder="0800 000 0000"
-                        className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
+                        className="w-full rounded-[1rem] border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-orange-400 sm:rounded-[1.2rem] sm:py-4"
                       />
                       {customerErrors.phone ? <p className="mt-2 text-xs font-semibold text-red-500">{customerErrors.phone}</p> : null}
                     </label>
@@ -1026,7 +1026,7 @@ export function ChillingtonShowcase() {
                         onChange={(event) => updateCustomerDetail("location", event.target.value)}
                         placeholder="Delivery address in Akure"
                         rows={3}
-                        className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
+                        className="w-full rounded-[1rem] border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-orange-400 sm:rounded-[1.2rem] sm:py-4"
                       />
                       {customerErrors.location ? <p className="mt-2 text-xs font-semibold text-red-500">{customerErrors.location}</p> : null}
                     </label>
@@ -1038,11 +1038,11 @@ export function ChillingtonShowcase() {
                         onChange={(event) => updateCustomerDetail("note", event.target.value)}
                         placeholder="Optional note for delivery or spice preference"
                         rows={2}
-                        className="w-full rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-900 outline-none transition focus:border-orange-400"
+                        className="w-full rounded-[1rem] border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-orange-400 sm:rounded-[1.2rem] sm:py-4"
                       />
                     </label>
 
-                    <div className="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-4">
+                    <div className="rounded-[1.35rem] border border-slate-200 bg-slate-50 p-4 sm:rounded-[1.5rem]">
                       <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Order summary</p>
                       <div className="mt-3 space-y-2 text-sm text-slate-600">
                         {cart.map((item) => (
@@ -1056,7 +1056,7 @@ export function ChillingtonShowcase() {
                   </div>
                 </div>
 
-                <div className="border-t border-orange-100 bg-orange-50/60 p-6">
+                <div className="border-t border-orange-100 bg-orange-50/60 p-4 sm:p-6">
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-sm text-slate-600">
                       <span>Subtotal</span>
@@ -1076,7 +1076,7 @@ export function ChillingtonShowcase() {
                     <button
                       type="button"
                       onClick={openWhatsAppOrder}
-                      className="flex w-full items-center justify-center gap-2 rounded-[1.35rem] bg-orange-500 px-6 py-4 text-sm font-semibold text-white transition hover:bg-orange-600"
+                      className="flex w-full items-center justify-center gap-2 rounded-[1.2rem] bg-orange-500 px-6 py-4 text-sm font-semibold text-white transition hover:bg-orange-600 sm:rounded-[1.35rem]"
                     >
                       Confirm and proceed
                       <ChevronRight className="h-4 w-4" />
